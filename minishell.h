@@ -153,7 +153,9 @@ int	arg_len(t_arg **ar);
 void	cr_pip(t_command *cur);
 int	cmd_len(t_command *cmd);
 void	verif_pipe(t_command *cur);
-void	waiting_room(int *id, int status, int j);
+int	waiting_room(int *id, int j);
 int	cr_fork();
 void	err_cmd(char **tab, char **tabb, t_commandlist *mini);
+void	close_pip(t_command *cur);
+void    free_lst(t_lst **lst);
 # endif

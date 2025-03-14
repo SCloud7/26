@@ -75,6 +75,10 @@ void free_shell(t_commandlist *mini)
     mini->cmd = NULL;
     mini->tokens = NULL;
     //printf("Fin de la libération de MiniShell\n");
+    if (mini->env)
+        free_lst(mini->env);
+    mini->env = NULL;
+    free(mini->env);
 }
 
 void    clean_up_and_exit(char *input, t_commandlist *mini)
@@ -86,7 +90,21 @@ void    clean_up_and_exit(char *input, t_commandlist *mini)
         free(input);
     if (mini)
         free_shell(mini);
-    //free(mini);
-    //rl_clear_history();
+    free(mini);
+    rl_clear_history();
     exit(i);
+}
+void    free_lst(t_lst **lst)
+{
+    t_lst *cur;
+
+    cur = *lst;
+    while (cur)
+    {
+        free(cur->line);
+        cur->line = NULL;
+//        free(cur);
+        cur = cur->next;
+    }
+    //free(lst);
 }

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int ispace(char c)
+int	ispace(char c)
 {
 	if (c == ' ' || c == '\n' || c == '\r' || c == '\f' || c == '\t' \
 	|| c == '\v')
@@ -20,7 +20,7 @@ int ispace(char c)
     return (0);
 }
 
-int is_special(char c)
+int	is_special(char c)
 {
     if (c == '|' || c == '<' || c == '>')
         return (1);
@@ -43,10 +43,10 @@ int	only_space(char *input)
 	return (1);
 }
 
-char *ft_strndup(const char *str, size_t n)
+char	*ft_strndup(const char *str, size_t n)
 {
-    char *res;
-    size_t i;
+    char	*res;
+    size_t	i;
 
     i = 0;
     res = (char *)malloc(n + 1);

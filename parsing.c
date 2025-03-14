@@ -118,8 +118,7 @@ int	parsing(char *input, t_commandlist *mini)
 		return (1);
 	lux(mini);
 	build_in(mini, input);
-	exe(mini);
-	print_args(mini);
+	//print_args(mini);
 	//print_commands(mini->cmd);
 	return (0);
 }

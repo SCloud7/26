@@ -14,27 +14,30 @@
 
 void	build_in(t_commandlist *mini, char *input)
 {
-	if (ft_strncmp(input, "exite", ft_strlen("exit")) == 0)
+	if (ft_strncmp(input, "exit", ft_strlen("exit")) == 0)
 		ft_exit(mini, input);
-	if (ft_strncmp(input, "echo", ft_strlen("echo")) == 0)
+	else if (ft_strncmp(input, "echo", ft_strlen("echo")) == 0)
 		ft_echo(mini);
-	if (ft_strncmp(input, "env", ft_strlen("env")) == 0)
+	else if (ft_strncmp(input, "env", ft_strlen("env")) == 0)
 		ft_env(mini);
-	if (ft_strncmp(input, "unset", ft_strlen("unset")) == 0)
+	else if (ft_strncmp(input, "unset", ft_strlen("unset")) == 0)
 		ft_unset(mini);
-	if (ft_strncmp(input, "export", ft_strlen("export")) == 0)
+	else if (ft_strncmp(input, "export", ft_strlen("export")) == 0)
 		ft_export(mini);
-	if (ft_strncmp(input, "pwd", ft_strlen("pwd")) == 0)
+	else if (ft_strncmp(input, "pwd", ft_strlen("pwd")) == 0)
 		ft_pwd(mini);
-	if (ft_strncmp(input, "cd", ft_strlen("cd")) == 0)
+	else if (ft_strncmp(input, "cd", ft_strlen("cd")) == 0)
 		ft_cd(mini);
+	else
+		exe(mini);
+
 }
 
 void	ft_exit(t_commandlist *mini, char *input)
 {
-	int	i;
-	t_arg *cur;
-	t_arg *nxt;
+	int		i;
+	t_arg	*cur;
+	t_arg	*nxt;
 
 	cur = mini->cmd->args->next;  // Vérifie que mini->cmd->args existe aussi !
 	if (!cur)  // Si pas d'arguments après "exit", on sort directement
@@ -49,24 +52,37 @@ void	ft_exit(t_commandlist *mini, char *input)
 		else
 			clean_up_and_exit(input, mini);
 	}
-	return;
+	return ;
 }
 
 void	ft_echo(t_commandlist *mini)
 {
 	t_arg	*cur;
 
+	if(mini->cmd->next)
+		return ;
 	cur = mini->cmd->args->next;
-	while (cur)
+	if (ft_strncmp(cur->content, "-n", 3) == 0)
 	{
-		printf("%s\n",  cur->content);
-		cur = cur->next;
+		while (cur)
+		{
+			cur = cur->next;
+			printf("%s", cur->content);
+		}
 	}
+	else
+		while (cur)
+		{
+			printf("%s\n", cur->content);
+			cur = cur->next;
+		}
 }
 void	ft_env(t_commandlist *mini)
 {
 	t_lst	*cur;
 
+	if(mini->cmd->next)
+		return ;
 	cur = (*mini->env);
 	while(cur)
 	{
@@ -81,6 +97,8 @@ void ft_unset(t_commandlist *mini)
     t_lst *del;
     t_lst *prev;
 
+	if(mini->cmd->next)
+		return ;
     cur_a = mini->cmd->args;
     while (cur_a)
     {
@@ -156,6 +174,8 @@ void	ft_export(t_commandlist *mini)
 {
 	t_arg *cur;
 
+	if(mini->cmd->next)
+		return ;
 	if(!mini)
 		return ;
 	cur = mini->cmd->args;
@@ -170,7 +190,8 @@ void	ft_export(t_commandlist *mini)
 }
 void	ft_pwd(t_commandlist *mini)
 {
-	(void)mini;
+	if(mini->cmd->next)
+		return ;
 	printf("%s\n", getcwd(NULL, 100));
 }
 

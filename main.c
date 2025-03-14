@@ -49,8 +49,7 @@ int	main(int ac, char **argv, char **env)
 			add_history(input);
 		if (parsing(input, mini) != 0)
 		{
-			i = mini->res;
-			free(input);
+			i = mini->res, free(input);
 			continue;
 		}
 		free(input);
