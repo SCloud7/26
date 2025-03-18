@@ -12,36 +12,27 @@
 
 #include "minishell.h"
 
-void handle_single_redirect(char *input, int *i, t_commandlist *mini, t_token_type token_type)
+int	skip_quotes(char *input, int *i)
 {
-	int		start;
-	char	*file;
+	char	quote;
 
-	(*i) += 1;
-	while (input[*i] && isspace(input[*i]))
-		(*i)++;
-	start = *i;
-	while (input[*i] && !isspace(input[*i]) && !is_special(input[*i]))
-		(*i)++;
-	file = ft_strndup(&input[start], *i - start);
-	add_token(mini, token_type, file);
-	free (file);
-	while (input[*i] && isspace(input[*i]))
-		(*i)++;
-}
-
-void handle_pipe(char *input, int *i, t_commandlist *mini, t_token_type token_type)
-{
-	add_token(mini, token_type, "|");
+	quote = input[*i];
 	(*i)++;
-	while (input[*i] && isspace(input[*i]))
+	while (input[*i] && input[*i] != quote)
+	{
 		(*i)++;
+		if (input[*i] == '\0')
+			return (1);
+	}
+	if (input[*i] == '\0')
+		return (1);
+	(*i)++;
+	return (0);
 }
 
 int	handle_arguments(char *input, int *i, t_commandlist *mini)
 {
 	int		start;
-	char	quote;
 	char	*current_token;
 
 	current_token = NULL;
@@ -50,18 +41,13 @@ int	handle_arguments(char *input, int *i, t_commandlist *mini)
 	{
 		if (input[*i] == '\'' || input[*i] == '"')
 		{
-			quote = input[*i];
-			(*i)++;
-			while (input[*i] && input[*i] != quote)
-			{
-				(*i)++;
-				if (input[*i] == '\0')
-					return (1);
-			}
-			(*i)++;
+			if (skip_quotes(input, i))
+				return (1);
 		}
 		else
 			(*i)++;
+		if (input[*i] == '\0')
+			break;
 	}
 	current_token = ft_strndup(&input[start], *i - start);
 	if (!current_token)
@@ -71,6 +57,20 @@ int	handle_arguments(char *input, int *i, t_commandlist *mini)
 	while (input[*i] && isspace(input[*i]))
 		(*i)++;
 	return (0);
+}
+
+void	handle_special_token(char *input, int *i, t_commandlist *mini)
+{
+	if (input[*i] == '|')
+		handle_pipe(input, i, mini, TOKEN_PIPE);
+	else if (input[*i] == '>' && input[*i + 1] == '>')
+		handle_double_redirect(input, i, mini, TOKEN_APPEND);
+	else if (input[*i] == '<' && input[*i + 1] == '<')
+		handle_double_redirect(input, i, mini, TOKEN_HEREDOC);
+	else if (input[*i] == '>')
+		handle_single_redirect(input, i, mini, TOKEN_OUT);
+	else if (input[*i] == '<')
+		handle_single_redirect(input, i, mini, TOKEN_IN);
 }
 
 int	lexing(char *input, t_commandlist *mini)
@@ -84,22 +84,9 @@ int	lexing(char *input, t_commandlist *mini)
 		while (isspace(input[i]))
 			i++;
 		if (is_special(input[i]))
-		{
-			if (input[i] == '|')
-				handle_pipe(input, &i, mini, TOKEN_PIPE);
-			else if (input[i] == '>' && input[i + 1] == '>')
-				handle_double_redirect(input, &i, mini, TOKEN_APPEND);
-			else if (input[i] == '<' && input[i + 1] == '<')
-				handle_double_redirect(input, &i, mini, TOKEN_HEREDOC);
-			else if (input[i] == '>')
-				handle_single_redirect(input, &i, mini, TOKEN_OUT);
-			else if (input[i] == '<')
-				handle_single_redirect(input, &i, mini, TOKEN_IN);
-		}
-		else
-		{	if (handle_arguments(input, &i, mini))
-				return (1);
-		}
+			handle_special_token(input, &i, mini);
+		else if (handle_arguments(input, &i, mini))
+			return (1);
 		while (isspace(input[i]))
 			i++;
 	}
@@ -108,18 +95,18 @@ int	lexing(char *input, t_commandlist *mini)
 
 int	parsing(char *input, t_commandlist *mini)
 {
-	//if (strcmp(input, "exit") == 0)
-	//	clean_up_and_exit(input, mini);
+	if (strcmp(input, "exit") == 0)
+		clean_up_and_exit(input, mini);
 	if (checking_error_before(input))
 		return (1);
 	if (lexing(input, mini) == 1)
 		return (1);
 	if (parse_token(mini) == 1)
 		return (1);
-	lux(mini);
-	build_in(mini, input);
-	//print_args(mini);
-	//print_commands(mini->cmd);
+	expand_variables(mini);
+	/*build_in(mini);*/
+	print_args(mini);
+	print_commands(mini->cmd);
 	return (0);
 }
 void print_args(t_commandlist *mini)

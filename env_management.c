@@ -1,99 +1,116 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   env_management.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/25 15:06:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/13 18:21:29 by ssoukoun         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
-void	lux(t_commandlist *mini)
+void	expand_variables(t_commandlist *mini)
 {
-	t_arg	*cur;
+	t_command	*cmd;
 
-	cur = mini->cmd->args;
-	while (cur)
+	cmd = mini->cmd;
+	while (cmd)
 	{
-		if (cur->content[0] == '"' && cur->content[1] == '$')
-			cur->content = look_env(mini, cur->content);
-		cur = cur->next;
+		expand_args(mini, cmd->args);
+		expand_args(mini, cmd->infile);
+		expand_args(mini, cmd->outfile);
+		expand_args(mini, cmd->append);
+		cmd = cmd->next;
 	}
 }
 
-char	*look_env(t_commandlist *mini, char *tab)
+void expand_args(t_commandlist *mini, t_arg *to_expand)
+{
+	t_arg *arg;
+	char *new_content;
+
+	arg = to_expand;
+	while (arg)
+	{
+		new_content = expand_env(mini, arg->content);
+		free(arg->content);
+		arg->content = new_content;
+		arg = arg->next;
+	}
+}
+
+void	handle_exit_status(t_commandlist *mini, char *expanded, int *j)
+{
+	char	*exit_char;
+	int		k;
+
+	exit_char = ft_itoa(mini->res);
+	if (!exit_char)
+		return ;
+	k = 0;
+	while (exit_char[k])
+		expanded[(*j)++] = exit_char[k++];
+	free(exit_char);
+}
+
+void	handle_env_variable(t_commandlist *mini, char *content, char *expanded, int *i, int *j)
+{
+	int		start;
+	int		var_len;
+	char	*var_name;
+	char	*env_temp;
+	int		k;
+
+	start = *i;
+	while (content[*i] && (ft_isalnum(content[*i]) || content[*i] == '_'))
+		(*i)++;
+	var_len = *i - start;
+	var_name = ft_substr(content, start, var_len);
+	if (!var_name)
+		return ;
+	env_temp = search_env(mini->env, var_name);
+	free(var_name);
+	if (env_temp)
+	{
+		k = 0;
+		while (env_temp[k])
+			expanded[(*j)++] = env_temp[k++];
+	}
+}
+
+char *expand_env(t_commandlist *mini, char *content)
 {
 	int		i;
-	char	*line;
+	int		j;
+	int		in_double_quote;
+	int		in_single_quote;
+	char	*expanded;
+	int		new_len;
 
+	j = 0;
 	i = 0;
-	tab = ft_strtrim(tab, "\"");
-	while (mini->env[i]->line)
-	{
-		line = ft_strnstr(mini->env[i]->line, (tab + 1), ft_strlen(tab));
-		if (line)
-			return (ft_strdup(mini->env[i]->line + ft_strlen(tab) + 1));
-		i++;
-	}
-	return (tab);
-}
-
-void	set_env(t_commandlist *mini, char **env)
-{
-	int	i;
-
-	i = 0;
-	if (!env || !*env)
-	{
-		printf("Y a rien à gratter\n");
-		exit(0);
-	}
-	mini->env = malloc(sizeof(t_lst *) + 1);
-	if (!mini->env)
-		return ;
-	*mini->env = NULL;
-	while (env[i])
-		append_node(mini, env[i++], mini->env);
-}
-
-void	append_node(t_commandlist *mini, char *env, t_lst **lst)
-{
-	t_lst	*newnode;
-	t_lst	*last;
-
-	(void)mini;
-	if (!lst) // Vérification de lst avant d'accéder à *lst
-		return ;
-	newnode = malloc(sizeof(t_lst) + 1);
-	if (newnode == NULL)
-		return ;
-	newnode->next = NULL;
-	newnode->line = ft_strdup(env);
-	newnode->pre = NULL;
-	if (*lst == NULL) // Si la liste est vide
-	{
-		*lst = newnode;
-	}
-	else
-	{
-		last = find_last(*lst);
-		if (last) // Vérifier que find_last a bien trouvé un dernier élément
-		{
-			last->next = newnode;
-			newnode->pre = last;
-		}
-	}
-}
-
-t_lst	*find_last(t_lst *stack)
-{
-	if (!stack)
+	in_double_quote = 0;
+	in_single_quote = 0;
+	if (!content)
 		return (NULL);
-	while (stack->next)
-		stack = stack->next;
-	return (stack);
+	new_len = calc_expand_length(mini, content);
+	printf("NEWLEN %d\n", new_len);
+	expanded = malloc(new_len + 1);
+	if (!expanded)
+		return (NULL);
+	while (content[i])
+	{
+		if (content[i] == '"' || content[i] == '\'')
+		{
+			toggle_quote(content[i], &in_double_quote, &in_single_quote);
+			i++;
+		}
+		else if (content[i] == '$' && !in_single_quote)
+		{
+			i++;
+			if (content[i] == '?')
+			{
+				handle_exit_status(mini, expanded, &j);
+				i++;
+			}
+			else if (ft_isalnum(content[i]) || content[i] == '_')
+				handle_env_variable(mini, content, expanded, &i, &j);
+			continue;
+		}
+		else
+			expanded[j++] = content[i++];
+	}
+	expanded[j] = '\0';
+	return (expanded);
 }

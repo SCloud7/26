@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 11:52:32 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/07 11:47:17 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/16 21:31:42 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_command *init_command(void)
 	t_command *new_command;
 	
 	new_command = malloc(sizeof(t_command));
-	//printf("Nouvelle commande créée -> Adresse : %p\n", (void *)new_command);
+	printf("Nouvelle commande créée -> Adresse : %p\n", (void *)new_command);
 	if (!new_command)
 		return (NULL);
 	new_command->args = NULL;
@@ -26,11 +26,6 @@ t_command *init_command(void)
 	new_command->append = NULL;
 	new_command->heredoc = NULL;
 	new_command->next = NULL;
-	new_command->prev = NULL;
-	new_command->pipe[0] = -1;
-	new_command->pipe[1] = -1;
-	if (pipe(new_command->pipe) < 0)
-		return(printf("looose\n"), NULL) ;
 	return (new_command);
 }
 
@@ -43,7 +38,7 @@ void	add_arg(t_arg **arg_list, char *str)
 	if (!new_arg)
 		return;
 	new_arg->content = strdup(str);
-	//printf("Ajout d'un argument/redirection -> Adresse : %p | Contenu : %p (%s)\n", (void *)new_arg, (void *)new_arg->content, new_arg->content);
+	printf("Ajout d'un argument/redirection -> Adresse : %p | Contenu : %p (%s)\n", (void *)new_arg, (void *)new_arg->content, new_arg->content);
 	if (!new_arg->content)
 	{
 		free(new_arg);
@@ -74,59 +69,46 @@ void	add_token_cmd(t_command *current, t_token_type token_type, char *str)
 	else if (token_type == TOKEN_HEREDOC)
 		add_arg(&current->heredoc, str);
 }
+
+void	add_command_to_list(t_commandlist *mini, t_command *current)
+{
+	t_command *temp;
+	
+	if (!mini->cmd)
+		mini->cmd = current;
+	else
+	{
+		temp = mini->cmd;
+		while (temp->next)
+			temp = temp->next;
+		temp->next = current;
+		printf("Ajout d'une commande à la liste -> Adresse : %p\n", (void *)current);
+		current->prev = temp;
+	}
+}
+
 int	parse_token(t_commandlist *mini)
 {
 	t_token		*current_token;
 	t_command	*current;
-	t_command	*temp;
-	t_command	*last; // Pour garder une référence au dernier élément ajouté
 
 	current_token = mini->tokens;
 	current = NULL;
-	last = NULL; // Initialisation du dernier élément
-	(void)temp;
-
 	while (current_token)
 	{
 		if (!current)
 			current = init_command();
-
 		if (current_token->type == TOKEN_PIPE)
 		{
-			if (current && current->args)
-			{
-				if (!mini->cmd)
-				{
-					mini->cmd = current;
-				}
-				else
-				{
-					last->next = current;
-					current->prev = last; // Ajout du chaînage arrière
-				}
-				last = current; // Mise à jour du dernier élément
-			}
+			if (current)
+				add_command_to_list(mini, current);
 			current = NULL;
 		}
 		else
-		{
 			add_token_cmd(current, current_token->type, current_token->value);
-		}
-
 		current_token = current_token->next;
 	}
-
-	// Ajouter la dernière commande si elle existe
-	if (current && current->args)
-	{
-		if (!mini->cmd)
-			mini->cmd = current;
-		else
-		{
-			last->next = current;
-			current->prev = last; // Ajout du chaînage arrière
-		}
-	}
-
+	if (current)
+		add_command_to_list(mini, current);
 	return (0);
 }
