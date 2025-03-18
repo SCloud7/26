@@ -101,18 +101,37 @@ int         check_pipe_syntax(char *input, int *i);
 int 	    checking_syntax(char *input);
 int	    checking_error_before(char *input);
 
+//utils_parsing_3
+void    handle_single_redirect(char *input, int *i, t_commandlist *mini, t_token_type token_type);
+void    handle_pipe(char *input, int *i, t_commandlist *mini, t_token_type token_type);
+int	add_token(t_commandlist *mini, t_token_type type, char *token_value);
+void    handle_double_redirect(char *input, int *i, t_commandlist *mini, t_token_type token_type);
+
+//env_init
+int	ft_numlen(int nbr);
+void	set_env(t_commandlist *mini, char **env);
+t_lst	*find_last(t_lst *stack);
+
+//env_lenght
+char	*search_env(t_lst *env, char *key);
+int 	get_env_length(t_commandlist *mini, char *var);
+void	toggle_quote(char c, int *in_double_quote, int *in_single_quote);
+int	get_var_lenght(t_commandlist *mini, char *content, int *i);
+int	calc_expand_length(t_commandlist *mini, char *content);
+
+//env_management
+void	expand_variables(t_commandlist *mini);
+void    expand_args(t_commandlist *mini, t_arg *to_expand);
+void	handle_exit_status(t_commandlist *mini, char *expanded, int *j);
+void	handle_env_variable(t_commandlist *mini, char *content, char *expanded, int *i, int *j);
+char    *expand_env(t_commandlist *mini, char *content);
+
 //free
 void    free_args(t_arg *args);
 void    free_command(t_command *cmd);
 void    free_shell(t_commandlist    *mini);
 void    clean_up_and_exit(char *input, t_commandlist *mini);
 
-//env
-void	lux(t_commandlist *mini);
-char    *look_env(t_commandlist *mini, char *tab);
-void	set_env(t_commandlist *mini, char **env);
-void	append_node(t_commandlist *mini, char *env, t_lst **lst);
-t_lst	*find_last(t_lst *stack);
 
 //build_in
 void	build_in(t_commandlist *mini, char *input);
