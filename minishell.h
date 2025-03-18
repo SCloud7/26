@@ -69,7 +69,7 @@ typedef struct s_command
 typedef struct s_commandlist
 {
     t_token                 *tokens;
-    t_lst					**env;
+    t_lst		    *env;
     t_command               *cmd;
     int                     res;
 }                            t_commandlist;
