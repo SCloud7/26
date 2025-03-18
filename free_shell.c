@@ -80,11 +80,11 @@ void    clean_up_and_exit(char *input, t_commandlist *mini)
     exit(0);
 }
 
-void    free_lst(t_lst **lst)
+void    free_lst(t_lst *lst)
 {
     t_lst *cur;
 
-    cur = *lst;
+    cur = lst;
     while (cur)
     {
         free(cur->line);

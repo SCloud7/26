@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 16:06:14 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/13 16:20:02 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/03/19 00:22:54 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ int	cmd_len(t_command *cmd)
 	return (i);
 }
 
-int	list_len(t_lst **lst)
+int	list_len(t_lst *lst)
 {
 	int		i;
 	t_lst	*cur;
 
 	i = 0;
-	cur = *lst;
+	cur = lst;
 	while (cur)
 	{
 		i++;
@@ -42,17 +42,17 @@ int	list_len(t_lst **lst)
 	return (i);
 }
 
-char	**lst_to_tab(t_lst **lst)
+char	**lst_to_tab(t_lst *lst)
 {
 	int		i;
 	int		len;
 	char	**tab;
 	t_lst	*cur;
 
-	if (!lst || !*lst)
+	if (!lst || !lst)
 		return (NULL);
 	len = list_len(lst);
-	cur = *lst;
+	cur = lst;
 	tab = malloc(sizeof(char *) * (len + 1));
 	if (!tab)
 		return (NULL);

@@ -106,6 +106,7 @@ void    handle_single_redirect(char *input, int *i, t_commandlist *mini, t_token
 void    handle_pipe(char *input, int *i, t_commandlist *mini, t_token_type token_type);
 int	add_token(t_commandlist *mini, t_token_type type, char *token_value);
 void    handle_double_redirect(char *input, int *i, t_commandlist *mini, t_token_type token_type);
+void	append_node(t_commandlist *mini, char *env, t_lst *lst);
 
 //env_init
 int	ft_numlen(int nbr);
@@ -116,8 +117,8 @@ t_lst	*find_last(t_lst *stack);
 char	*search_env(t_lst *env, char *key);
 int 	get_env_length(t_commandlist *mini, char *var);
 void	toggle_quote(char c, int *in_double_quote, int *in_single_quote);
-int	get_var_lenght(t_commandlist *mini, char *content, int *i);
-int	calc_expand_length(t_commandlist *mini, char *content);
+int	    get_var_lenght(t_commandlist *mini, char *content, int *i);
+int	    calc_expand_length(t_commandlist *mini, char *content);
 
 //env_management
 void	expand_variables(t_commandlist *mini);
@@ -157,19 +158,19 @@ void print_commands(t_command *cmd);
 void exe(t_commandlist *mini);
 char **findpath(t_commandlist *mini);
 void child_pr(t_command *cmd, t_commandlist *mini);
-char **lst_to_tab(t_lst **lst);
+char **lst_to_tab(t_lst *lst);
 void cas(t_commandlist *mini);
-int list_len(t_lst **lst);
+int list_len(t_lst *lst);
 int lefork(void);
 void red(t_command *cur);
 void in_file(t_command *cur);
 void out_file(t_command *cur);
 void add_file(t_command *cur);
 void her_doc(t_command *cur);
-void redirect_lines(t_lst **lst);
+void redirect_lines(t_lst *lst);
 void	free_tab(char **tab);
 int	ft_strnstri(const char *haystack, const char *needle, size_t len);
-void clean_lst(t_lst **lst);
+void clean_lst(t_lst *lst);
 char	**arg_to_tab(t_arg *lst);
 int	cmd_len(t_command *cmd);
 int	arg_len(t_arg **ar);
@@ -181,5 +182,5 @@ int	waiting_room(int *id, int j);
 int	cr_fork();
 void	err_cmd(char **tab, char **tabb, t_commandlist *mini);
 void	close_pip(t_command *cur);
-void    free_lst(t_lst **lst);
+void    free_lst(t_lst *lst);
 # endif

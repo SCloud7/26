@@ -83,7 +83,7 @@ void	ft_env(t_commandlist *mini)
 
 	if(mini->cmd->next)
 		return ;
-	cur = (*mini->env);
+	cur = mini->env;
 	while(cur)
 	{
 		printf("%s \n", cur->line);
@@ -102,7 +102,7 @@ void ft_unset(t_commandlist *mini)
     cur_a = mini->cmd->args;
     while (cur_a)
     {
-		cur = *mini->env;
+		cur = mini->env;
         prev = NULL;
         while (cur)
         {
@@ -110,8 +110,8 @@ void ft_unset(t_commandlist *mini)
             {
                 del = cur;
                 cur = cur->next;
-                if (del == *mini->env)
-                    *mini->env = cur;
+                if (del == mini->env)
+                    mini->env = cur;
                 if (prev)
                 {
                     prev->next = cur;

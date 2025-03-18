@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:54:35 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/16 21:31:45 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/19 00:20:28 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,4 +105,35 @@ void handle_double_redirect(char *input, int *i, t_commandlist *mini, t_token_ty
 	free (file);
 	while (input[*i] && isspace(input[*i]))
 		(*i)++;
+}
+
+void	append_node(t_commandlist *mini, char *env, t_lst *lst)
+{
+	t_lst	*newnode;
+	t_lst	*last;
+	(void)mini;
+
+	if (!lst) // Vérification de lst avant d'accéder à *lst
+		return ;
+
+	newnode = malloc(sizeof(t_lst));
+	if (newnode == NULL)
+		return ;
+	newnode->next = NULL;
+	newnode->line = ft_strdup(env);
+	newnode->pre = NULL;
+
+	if (lst == NULL) // Si la liste est vide
+	{
+		lst = newnode;
+	}
+	else
+	{
+		last = find_last(lst);
+		if (last) // Vérifier que find_last a bien trouvé un dernier élément
+		{
+			last->next = newnode;
+			newnode->pre = last;
+		}
+	}
 }

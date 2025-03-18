@@ -50,6 +50,7 @@ int	main(int ac, char **argv, char **env)
 	(void)ac;
 	int	i;
 
+	i = 0;
 	mini = init_shell();
 	if (!mini)
 		return (printf("Error allocating memory\n"), 1);
@@ -80,16 +81,16 @@ int	main(int ac, char **argv, char **env)
 		free_shell(mini);
 	}
 	t_lst *next_env;
-    	t_lst *temp_env = mini->env;
-    	while (temp_env)
-    	{
-       		next_env = temp_env->next;
-        	if (temp_env->line)
-            	free(temp_env->line);
-        	free(temp_env);
-        	temp_env = next_env;
-    	}
-    	mini->env = NULL; 
+    t_lst *temp_env = mini->env;
+    while (temp_env)
+    {
+       	next_env = temp_env->next;
+        if (temp_env->line)
+        	free(temp_env->line);
+        free(temp_env);
+        temp_env = next_env;
+    }
+    mini->env = NULL; 
 	free_shell(mini);
 	free(mini);
 	rl_clear_history();

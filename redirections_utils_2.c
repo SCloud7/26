@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils_2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 16:09:10 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/13 17:21:08 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/03/19 00:25:54 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ void	err_cmd(char **tab, char **tabb, t_commandlist *mini)
 	ft_exit(mini, NULL);
 }
 
-void	clean_lst(t_lst **lst)
+void	clean_lst(t_lst *lst)
 {
 	t_lst	*cur;
 	t_lst	*next;
 
-	cur = *lst;
+	cur = lst;
 	while (cur)
 	{
 		next = cur->next;

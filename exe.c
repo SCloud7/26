@@ -47,7 +47,7 @@ char	**findpath(t_commandlist *mini)
 	char	**paths;
 	t_lst	*cur;
 
-	cur = *mini->env;
+	cur = mini->env;
 	while (cur)
 	{
 		if (ft_strnstri(cur->line, "PATH", 4) == 1)

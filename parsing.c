@@ -95,8 +95,6 @@ int	lexing(char *input, t_commandlist *mini)
 
 int	parsing(char *input, t_commandlist *mini)
 {
-	if (strcmp(input, "exit") == 0)
-		clean_up_and_exit(input, mini);
 	if (checking_error_before(input))
 		return (1);
 	if (lexing(input, mini) == 1)
@@ -104,9 +102,9 @@ int	parsing(char *input, t_commandlist *mini)
 	if (parse_token(mini) == 1)
 		return (1);
 	expand_variables(mini);
-	/*build_in(mini);*/
-	print_args(mini);
-	print_commands(mini->cmd);
+	build_in(mini, input);
+	/*print_args(mini);
+	print_commands(mini->cmd);*/
 	return (0);
 }
 void print_args(t_commandlist *mini)

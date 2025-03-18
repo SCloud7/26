@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 16:04:36 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/13 16:19:41 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/03/19 00:28:44 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	red(t_command *cur)
 {
-	t_command	*prev;
+	/*t_command	*prev;
 	t_command	*next;
 
 	prev = cur->prev;
-	next = cur->next;
+	next = cur->next;*/
 	her_doc(cur);
 	in_file(cur);
 	out_file(cur);
@@ -100,12 +100,12 @@ void	her_doc(t_command *cur)
 {
 	t_arg	*fil;
 	char	*line;
-	t_lst	**lst;
+	t_lst	*lst;
 
 	lst = malloc(sizeof(t_lst *));
 	if (!lst)
 		return ;
-	*lst = NULL;
+	lst = NULL;
 	fil = cur->heredoc;
 	while (fil)
 	{

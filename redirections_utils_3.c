@@ -67,12 +67,12 @@ int	lefork(void)
 	return (i);
 }
 
-void	redirect_lines(t_lst **lst)
+void	redirect_lines(t_lst *lst)
 {
 	int		pipes[2];
 	t_lst	*act;
 
-	act = *lst;
+	act = lst;
 	if (pipe(pipes) < 0)
 		return ;
 	while (act)

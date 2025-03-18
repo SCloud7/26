@@ -15,17 +15,20 @@ CC = cc
 HEAD = .
 CFLAGS = -g3 -Wall -Werror -Wextra
 LDFLAGS = -lreadline  # Ajout du linking readline
-SOURCES = main.c parsing.c free_shell.c utils_parsing.c utils_parsing_2.c utils_parsing_3.c env_init.c env_management.c expand_lenght.c parsing_2.c env_management.c builds_in.c exe.c \
-		redirections_utils_3.c redirections_utils_2.c redirections_utils.c redirections.c \
+SOURCES = main.c parsing.c free_shell.c utils_parsing.c utils_parsing_2.c utils_parsing_3.c env_init.c expand_length.c parsing_2.c env_management.c builds_in.c exe.c \
+		redirections_utils_3.c redirections_utils_2.c redirections_utils.c redirections.c
 OBJECTS = $(SOURCES:.c=.o)  # Génération des fichiers .o automatiquement
 
 
 MAKE_LIBFT        =    make -s -C ./libft
 LIBFT_A			=		./libft/libft.a
 
-all: $(NAME)
+$(LIBFT_A):
+	$(MAKE_LIBFT)
 
-$(NAME): $(OBJECTS)
+all: $(NAME) $(LIBFT_A)
+
+$(NAME): $(OBJECTS) $(LIBFT_A)
 	$(CC) $(CFLAGS) $(OBJECTS) ${LIBFT_A} -g -o $(NAME) $(LDFLAGS)  # Link avec -lreadline
 
 %.o: %.c
@@ -33,9 +36,11 @@ $(NAME): $(OBJECTS)
 
 clean:
 	rm -rf $(OBJECTS)
+	$(MAKE_LIBFT) clean
 
 fclean: clean
 	rm -rf $(NAME)
+	$(MAKE_LIBFT) fclean
 
 re: fclean all
 
