@@ -75,15 +75,18 @@ typedef struct s_commandlist
 }                            t_commandlist;
 
 //Parsing
-void    handle_single_redirect(char *input, int *i, t_commandlist *mini, t_token_type token_type);
-void    handle_pipe(char *input, int *i, t_commandlist *mini, t_token_type token_type);
+int	skip_quotes(char *input, int *i);
 int 	handle_arguments(char *input, int *i, t_commandlist *mini);
+void	handle_special_token(char *input, int *i, t_commandlist *mini);
 int 	lexing(char *input, t_commandlist *mini);
-int	    parsing(char *input, t_commandlist *mini);
+int	parsing(char *input, t_commandlist *mini);
 
 //Parsing2
-t_command   *init_command(void);
-int	        parse_token(t_commandlist *mini);
+t_command  	*init_command(void);
+void		add_arg(t_arg **arg_list, char *str);
+void		add_token_cmd(t_command *current, t_token_type token_type, char *str);
+void		add_command_to_list(t_commandlist *mini, t_command *current);
+int		parse_token(t_commandlist *mini);
 
 //Utils_Parsing_1
 int     ispace(char c);
