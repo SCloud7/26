@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 11:52:32 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/16 21:31:42 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/19 00:43:14 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_command *init_command(void)
 	t_command *new_command;
 	
 	new_command = malloc(sizeof(t_command));
-	printf("Nouvelle commande créée -> Adresse : %p\n", (void *)new_command);
 	if (!new_command)
 		return (NULL);
 	new_command->args = NULL;
@@ -38,7 +37,6 @@ void	add_arg(t_arg **arg_list, char *str)
 	if (!new_arg)
 		return;
 	new_arg->content = strdup(str);
-	printf("Ajout d'un argument/redirection -> Adresse : %p | Contenu : %p (%s)\n", (void *)new_arg, (void *)new_arg->content, new_arg->content);
 	if (!new_arg->content)
 	{
 		free(new_arg);
@@ -82,7 +80,6 @@ void	add_command_to_list(t_commandlist *mini, t_command *current)
 		while (temp->next)
 			temp = temp->next;
 		temp->next = current;
-		printf("Ajout d'une commande à la liste -> Adresse : %p\n", (void *)current);
 		current->prev = temp;
 	}
 }
