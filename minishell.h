@@ -102,9 +102,10 @@ int 	    checking_syntax(char *input);
 int	    checking_error_before(char *input);
 
 //free
+void    free_args(t_arg *args);
+void    free_command(t_command *cmd);
 void    free_shell(t_commandlist    *mini);
 void    clean_up_and_exit(char *input, t_commandlist *mini);
-void    free_split(char **split);
 
 //env
 void	lux(t_commandlist *mini);
