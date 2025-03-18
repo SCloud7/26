@@ -91,14 +91,15 @@ int		parse_token(t_commandlist *mini);
 //Utils_Parsing_1
 int     ispace(char c);
 int     is_special(char c);
-int	    only_space(char *input);
-int	    open_quote(char *input);
+int	only_space(char *input);
 char    *ft_strndup(const char *s, size_t n);
+int	open_quote(char *input);
 
 //utils_parsing_2
+int         check_redirection_syntax(char *input, int *i);
+int         check_pipe_syntax(char *input, int *i);
+int 	    checking_syntax(char *input);
 int	    checking_error_before(char *input);
-int	    add_token(t_commandlist *mini, t_token_type type, char *token_value);
-void    handle_double_redirect(char *input, int *i, t_commandlist *mini, t_token_type token_type);
 
 //free
 void    free_shell(t_commandlist    *mini);
