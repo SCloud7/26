@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:49:31 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/16 21:31:30 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/19 00:46:42 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	set_env(t_commandlist *mini, char **env)
 	i = 0;
 	if (!env || !*env)
 		exit(0);
-	mini->res = 2;
 	while (env[i])
 	{
 		newnode = malloc(sizeof(t_lst));

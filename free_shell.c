@@ -80,6 +80,22 @@ void    clean_up_and_exit(char *input, t_commandlist *mini)
     exit(0);
 }
 
+void    free_env(t_commandlist *mini)
+{
+    t_lst *next_env;
+    t_lst *temp_env = mini->env;
+    while (temp_env)
+    {
+    next_env = temp_env->next;
+    if (temp_env->line)
+        free(temp_env->line);
+    free(temp_env);
+    temp_env = next_env;
+    }
+    mini->env = NULL;
+}
+
+
 void    free_lst(t_lst *lst)
 {
     t_lst *cur;

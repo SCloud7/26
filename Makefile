@@ -19,28 +19,26 @@ SOURCES = main.c parsing.c free_shell.c utils_parsing.c utils_parsing_2.c utils_
 		redirections_utils_3.c redirections_utils_2.c redirections_utils.c redirections.c
 OBJECTS = $(SOURCES:.c=.o)  # Génération des fichiers .o automatiquement
 
+LIBFT_A = ./libft/libft.a
 
-MAKE_LIBFT        =    make -s -C ./libft
-LIBFT_A			=		./libft/libft.a
+all: $(LIBFT_A) $(NAME)
 
 $(LIBFT_A):
-	$(MAKE_LIBFT)
-
-all: $(NAME) $(LIBFT_A)
+	$(MAKE) -s -C ./libft
 
 $(NAME): $(OBJECTS) $(LIBFT_A)
-	$(CC) $(CFLAGS) $(OBJECTS) ${LIBFT_A} -g -o $(NAME) $(LDFLAGS)  # Link avec -lreadline
+	$(CC) $(CFLAGS) $(OBJECTS) ${LIBFT_A} -g -o $(NAME) $(LDFLAGS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(HEAD)  # Compilation des .c en .o
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(HEAD)
 
 clean:
 	rm -rf $(OBJECTS)
-	$(MAKE_LIBFT) clean
+	$(MAKE) -C ./libft clean
 
 fclean: clean
 	rm -rf $(NAME)
-	$(MAKE_LIBFT) fclean
+	$(MAKE) -C ./libft fclean
 
 re: fclean all
 
