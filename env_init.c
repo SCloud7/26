@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:49:31 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/19 00:46:42 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/19 13:51:10 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,12 @@ void	set_env(t_commandlist *mini, char **env)
 {
 	int		i;
 	t_lst	*newnode;
+	t_lst	*last;
 
 	i = 0;
 	if (!env || !*env)
 		exit(0);
+	mini->res = 2;
 	while (env[i])
 	{
 		newnode = malloc(sizeof(t_lst));
@@ -52,7 +54,7 @@ void	set_env(t_commandlist *mini, char **env)
 			mini->env = newnode;
 		else
 		{
-			t_lst *last = find_last(mini->env);
+			last = find_last(mini->env);
 			last->next = newnode;
 			newnode->pre = last;
 		}
@@ -68,4 +70,3 @@ t_lst	*find_last(t_lst *stack)
 		stack = stack->next;
 	return (stack);
 }
-

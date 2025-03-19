@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils_2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 16:09:10 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/19 00:25:54 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/19 16:24:47 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	err_cmd(char **tab, char **tabb, t_commandlist *mini)
+void	err_cmd(char **tab, char **tabb)
 {
+	printf("%s: command not found\n", tabb[0]);
 	free_tab(tab);
 	free_tab(tabb);
-	printf(": command not found\n");
-	ft_exit(mini, NULL);
+	//ft_exit(mini, NULL);
 }
 
 void	clean_lst(t_lst *lst)
@@ -68,4 +68,27 @@ void	free_tab(char **tab)
 	tab = NULL;
 }
 
-
+void	her_doc_p2(t_arg *fil, char *line, t_lst **lst)
+{
+	while (fil)
+	{
+		while (1)
+		{
+			line = readline("hd:");
+			if (!line)
+			{
+				printf("heredoc: unexpected EOF\n");
+				break ;
+			}
+			if (strcmp(line, fil->content) == 0)
+			{
+				free(line);
+				break ;
+			}
+			append_node(NULL, line, *lst);
+			free(line);
+		}
+		fil = fil->next;
+	}
+	redirect_lines(*lst);
+}

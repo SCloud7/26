@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_length.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:51:20 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/16 21:31:36 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/19 14:27:21 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,21 @@ char	*search_env(t_lst *env, char *key)
 	if (!env || !key)
 		return (NULL);
 	key_len = ft_strlen(key);
-	while(env)
+	while (env)
 	{
-		if(ft_strncmp(env->line, key, key_len) == 0 && env->line[key_len] == '=')
+		if (ft_strncmp(env->line, key, key_len) == 0
+			&& env->line[key_len] == '=')
 			return (env->line + key_len + 1);
 		env = env->next;
 	}
 	return (NULL);
 }
 
-int get_env_length(t_commandlist *mini, char *var)
+int	get_env_length(t_commandlist *mini, char *var)
 {
-	char *value = search_env(mini->env, var);
+	char	*value;
+
+	value = search_env(mini->env, var);
 	if (value)
 		return (ft_strlen(value));
 	return (0);
@@ -86,7 +89,7 @@ int	calc_expand_length(t_commandlist *mini, char *content)
 			}
 			else if (ft_isalnum(content[i]) || content[i] == '_')
 				new_len += get_var_lenght(mini, content, &i);
-			continue;
+			continue ;
 		}
 		else
 		{

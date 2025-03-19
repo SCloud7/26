@@ -103,8 +103,8 @@ int	parsing(char *input, t_commandlist *mini)
 		return (1);
 	expand_variables(mini);
 	build_in(mini, input);
-	print_args(mini);
-	print_commands(mini->cmd);
+	/*print_args(mini);
+	print_commands(mini->cmd);*/
 	return (0);
 }
 void print_args(t_commandlist *mini)
@@ -144,7 +144,6 @@ void print_commands(t_command *cmd)
             printf("  Argument: %s\n", arg->content);
             arg = arg->next;
         }
-
         // Affiche les redirections si elles existent
         if (temp->infile)
             print_redirections(temp->infile, "Infile");

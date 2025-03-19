@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 11:52:32 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/19 00:43:14 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/19 14:18:47 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_command *init_command(void)
+t_command	*init_command(void)
 {
-	t_command *new_command;
-	
+	t_command	*new_command;
+
 	new_command = malloc(sizeof(t_command));
 	if (!new_command)
 		return (NULL);
@@ -25,22 +25,27 @@ t_command *init_command(void)
 	new_command->append = NULL;
 	new_command->heredoc = NULL;
 	new_command->next = NULL;
+	new_command->prev = NULL;
+	new_command->pipe[0] = -1;
+	new_command->pipe[1] = -1;
+	if (pipe(new_command->pipe) < 0)
+		return (printf("looose\n"), NULL);
 	return (new_command);
 }
 
 void	add_arg(t_arg **arg_list, char *str)
 {
-	t_arg *temp;
-	t_arg *new_arg;
-	
+	t_arg	*temp;
+	t_arg	*new_arg;
+
 	new_arg = malloc(sizeof(t_arg));
 	if (!new_arg)
-		return;
+		return ;
 	new_arg->content = strdup(str);
 	if (!new_arg->content)
 	{
 		free(new_arg);
-		return;
+		return ;
 	}
 	new_arg->next = NULL;
 	if (!*arg_list)
@@ -70,8 +75,8 @@ void	add_token_cmd(t_command *current, t_token_type token_type, char *str)
 
 void	add_command_to_list(t_commandlist *mini, t_command *current)
 {
-	t_command *temp;
-	
+	t_command	*temp;
+
 	if (!mini->cmd)
 		mini->cmd = current;
 	else

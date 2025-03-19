@@ -19,10 +19,10 @@ void	exe(t_commandlist *mini)
 	int			i;
 
 	cur = mini->cmd;
-	i = cmd_len(mini->cmd);
-	id = malloc((sizeof(int) * i) + 1);
+	i = cmd_len(mini->cmd) + 1;
+	id = malloc((sizeof(int) * i));
 	i = 0;
-	if (!id)
+	if (!id || !cur)
 		return ;
 	while (cur)
 	{
@@ -30,15 +30,17 @@ void	exe(t_commandlist *mini)
 		id[i] = cr_fork();
 		if (id[i] == 0)
 		{
-			red(cur);
-			verif_pipe(cur);
+			red(cur, mini);
 			child_pr(cur, mini);
+			free(id);
+			ft_exit(mini, NULL);
 		}
 		close_pip(cur);
 		cur = cur->next;
 		i++;
 	}
-	mini->res = waiting_room(id, i);
+	if (id)
+		mini->res = waiting_room(id, i);
 }
 
 char	**findpath(t_commandlist *mini)
@@ -80,13 +82,10 @@ void	child_pr(t_command *cmd, t_commandlist *mini)
 		cmde = ft_strjoin(tmp, argss[0]);
 		free(tmp);
 		if (access(cmde, X_OK | F_OK) == 0)
-		{
-			//free_tab(paths);
 			execve(cmde, argss, NULL);
-		}
 		free(cmde);
 	}
-	err_cmd(paths, argss, mini);
+	err_cmd(paths, argss);
 }
 
 void	cas(t_commandlist *mini)
@@ -107,14 +106,14 @@ void	cas(t_commandlist *mini)
 
 void	verif_pipe(t_command *cur)
 {
-	if (cur->prev) // Redirection STDIN
+	if (cur->prev)
 	{
 		dup2(cur->prev->pipe[0], STDIN_FILENO);
-		close(cur->prev->pipe[0]); // ✅ Fermer après duplication
+		close(cur->prev->pipe[0]);
 	}
-	if (cur->next) // Redirection STDOUT
+	if (cur->next)
 	{
 		dup2(cur->pipe[1], STDOUT_FILENO);
-		close(cur->pipe[1]); // ✅ Fermer après duplication
+		close(cur->pipe[1]);
 	}
 }

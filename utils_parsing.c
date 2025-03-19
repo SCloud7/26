@@ -14,27 +14,26 @@
 
 int ispace(char c)
 {
-	if (c == ' ' || c == '\n' || c == '\r' || c == '\f' || c == '\t' \
-	|| c == '\v')
-        return (1);
-    return (0);
+	if (c == ' ' || c == '\n' || c == '\r' || c == '\f' || c == '\t' || c == '\v')
+		return (1);
+	return (0);
 }
 
 int is_special(char c)
 {
-    if (c == '|' || c == '<' || c == '>')
-        return (1);
-    return (0);
+	if (c == '|' || c == '<' || c == '>')
+		return (1);
+	return (0);
 }
 
-int	only_space(char *input)
+int only_space(char *input)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	if (!input || input[0] == '\0')
 	{
-		printf("\n");
+		//printf("\n");
 		return (1);
 	}
 	while (input[i])
@@ -49,30 +48,30 @@ int	only_space(char *input)
 
 char *ft_strndup(const char *str, size_t n)
 {
-    char *res;
-    size_t i;
+	char *res;
+	size_t i;
 
-    i = 0;
-    res = (char *)malloc(n + 1);
-    if (res == NULL)
-        return (NULL);
-    while (i < n && str[i] != '\0')
-    {
-        res[i] = str[i];
-        i++;
-    }
-    res[i] = '\0';
-    return (res);
+	i = 0;
+	res = (char *)malloc(n + 1);
+	if (res == NULL)
+		return (NULL);
+	while (i < n && str[i] != '\0')
+	{
+		res[i] = str[i];
+		i++;
+	}
+	res[i] = '\0';
+	return (res);
 }
 
-int	open_quote(char *input)
+int open_quote(char *input)
 {
-	int		i;
-	char	quote;
+	int i;
+	char quote;
 
 	i = 0;
 	if (!input)
-		return(0);
+		return (0);
 	while (input[i])
 	{
 		if (input[i] == '\'' || input[i] == '"')

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-volatile sig_atomic_t g_signal = 0;
+volatile sig_atomic_t	g_signal = 0;
 
 t_commandlist	*init_shell(void)
 {
@@ -42,31 +42,20 @@ void	signal_handler(int sig)
 		signal(SIGQUIT, SIG_IGN);
 }
 
-int	main(int ac, char **argv, char **env)
+void	boucle(t_commandlist *mini, int i)
 {
-	t_commandlist	*mini;
 	char	*input;
-	(void)argv;
-	(void)ac;
-	int	i;
 
-	i = 0;
-	mini = init_shell();
-	if (!mini)
-		return (printf("Error allocating memory\n"), 1);
-	set_env(mini, env);
-	signal(SIGQUIT, signal_handler);
-	signal(SIGINT, signal_handler);
 	while (1)
 	{
 		input = readline("user:");
 		if (!input)
-			break;
+			break ;
 		if (g_signal == SIGINT)
 		{
 			g_signal = 0;
 			free(input);
-			continue;
+			continue ;
 		}
 		if (*input)
 			add_history(input);
@@ -75,13 +64,55 @@ int	main(int ac, char **argv, char **env)
 			i = mini->res;
 			free(input);
 			free_shell(mini);
-			continue;
+			continue ;
 		}
 		free(input);
 		free_shell(mini);
 	}
-	if (mini->env)
-		free_env(mini);
+}
+
+void	init_base(t_commandlist *mini, char **env)
+{
+	set_env(mini, env);
+	signal(SIGQUIT, signal_handler);
+	signal(SIGINT, signal_handler);
+}
+
+void	clear_env(t_commandlist *mini)
+{
+	t_lst			*temp_env;
+	t_lst			*next_env;
+
+	temp_env = mini->env;
+	while (temp_env)
+	{
+		next_env = temp_env->next;
+		if (temp_env->line)
+			free(temp_env->line);
+		free(temp_env);
+		temp_env = next_env;
+	}
+	mini->env = NULL;
+
+}
+
+int	main(int ac, char **argv, char **env)
+{
+	t_commandlist	*mini;
+	int				i;
+
+	(void)ac;
+	(void)argv;
+	i = 0;
+	mini = init_shell();
+	if (!mini)
+	{
+		printf("Error allocating memory\n"), 
+		exit(-1);
+	}
+	init_base(mini, env);
+	boucle (mini, i);
+	clear_env(mini);	
 	free_shell(mini);
 	free(mini);
 	rl_clear_history();

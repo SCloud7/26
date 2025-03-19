@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections_utils_3.c                              :+:      :+:    :+:   */
+/*   redirections_utils_3.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 16:11:14 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/13 16:22:11 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/03/19 14:07:44 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,24 +65,4 @@ int	lefork(void)
 	if (i < 0)
 		return (perror("fork1"), -1);
 	return (i);
-}
-
-void	redirect_lines(t_lst *lst)
-{
-	int		pipes[2];
-	t_lst	*act;
-
-	act = lst;
-	if (pipe(pipes) < 0)
-		return ;
-	while (act)
-	{
-		write(pipes[1], act->line, ft_strlen(act->line));
-		write(pipes[1], "\n", 1);
-		act = act->next;
-	}
-	dup2(pipes[0], STDIN_FILENO);
-	close(pipes[0]);
-	close(pipes[1]);
-	clean_lst(lst);
 }

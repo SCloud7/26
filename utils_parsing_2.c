@@ -3,26 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   utils_parsing_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 11:51:41 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/16 21:31:44 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/19 14:16:08 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int check_redirection_syntax(char *input, int *i)
+int	check_redirection_syntax(char *input, int *i)
 {
-	char temp;
-	
+	char	temp;
+
 	temp = input[*i];
 	(*i)++;
 	if (input[*i] == temp)
 		(*i)++;
 	while (isspace(input[*i]))
 		(*i)++;
-	if (input[*i] == '\0' || input[*i] == '>' || input[*i] == '<' || input[*i] == '|')
+	if (input[*i] == '\0' || input[*i] == '>'
+		|| input[*i] == '<' || input[*i] == '|')
 	{
 		printf("Syntax error near unexpected token\n");
 		return (1);
@@ -30,12 +31,13 @@ int check_redirection_syntax(char *input, int *i)
 	return (0);
 }
 
-int check_pipe_syntax(char *input, int *i)
+int	check_pipe_syntax(char *input, int *i)
 {
 	(*i)++;
 	while (isspace(input[*i]))
 		(*i)++;
-	if (input[*i] == '\0' || input[*i] == '>' || input[*i] == '<' || input[*i] == '|')
+	if (input[*i] == '\0' || input[*i] == '>'
+		|| input[*i] == '<' || input[*i] == '|')
 	{
 		printf("Syntax error near unexpected token\n");
 		return (1);
@@ -43,10 +45,13 @@ int check_pipe_syntax(char *input, int *i)
 	return (0);
 }
 
-int checking_syntax(char *input)
+int	checking_syntax(char *input)
 {
-	int i = 0;
-	if (input[i] == '|' || (input[i] == '<' && input[i + 1] != '<') || input[i] == '>')
+	int	i;
+
+	i = 0;
+	if (input[i] == '|' || (input[i] == '<' && input[i + 1] != '<')
+		|| input[i] == '>')
 	{
 		printf("Syntax error near unexpected token\n");
 		return (1);
@@ -69,8 +74,7 @@ int checking_syntax(char *input)
 	return (0);
 }
 
-int checking_error_before(char *input)
+int	checking_error_before(char *input)
 {
 	return (only_space(input) || open_quote(input) || checking_syntax(input));
 }
-

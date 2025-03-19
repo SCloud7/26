@@ -131,7 +131,6 @@ char    *expand_env(t_commandlist *mini, char *content);
 void    free_args(t_arg *args);
 void    free_command(t_command *cmd);
 void    free_shell(t_commandlist    *mini);
-void    free_env(t_commandlist *mini);
 void    clean_up_and_exit(char *input, t_commandlist *mini);
 
 
@@ -163,11 +162,12 @@ char **lst_to_tab(t_lst *lst);
 void cas(t_commandlist *mini);
 int list_len(t_lst *lst);
 int lefork(void);
-void red(t_command *cur);
+void red(t_command *cur, t_commandlist * mini);
 void in_file(t_command *cur);
 void out_file(t_command *cur);
 void add_file(t_command *cur);
-void her_doc(t_command *cur);
+void her_doc(t_command *cur, t_commandlist *mini);
+void	her_doc_p2(t_arg *fil, char *line, t_lst **lst);
 void redirect_lines(t_lst *lst);
 void	free_tab(char **tab);
 int	ft_strnstri(const char *haystack, const char *needle, size_t len);
@@ -181,7 +181,8 @@ int	cmd_len(t_command *cmd);
 void	verif_pipe(t_command *cur);
 int	waiting_room(int *id, int j);
 int	cr_fork();
-void	err_cmd(char **tab, char **tabb, t_commandlist *mini);
+void	err_cmd(char **tab, char **tabb);
 void	close_pip(t_command *cur);
 void    free_lst(t_lst *lst);
+int ft_strcmp(char *s1, char *s2, int j);
 # endif

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_management.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/19 13:51:28 by ssoukoun          #+#    #+#             */
+/*   Updated: 2025/03/19 13:53:46 by ssoukoun         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	expand_variables(t_commandlist *mini)
@@ -15,10 +27,10 @@ void	expand_variables(t_commandlist *mini)
 	}
 }
 
-void expand_args(t_commandlist *mini, t_arg *to_expand)
+void	expand_args(t_commandlist *mini, t_arg *to_expand)
 {
-	t_arg *arg;
-	char *new_content;
+	t_arg	*arg;
+	char	*new_content;
 
 	arg = to_expand;
 	while (arg)
@@ -53,7 +65,8 @@ void	handle_env_variable(t_commandlist *mini, char *content, char *expanded, int
 	int		k;
 
 	start = *i;
-	while (content[*i] && (ft_isalnum(content[*i]) || content[*i] == '_'))
+	while (content[*i] && (ft_isalnum(content[*i])
+			||content[*i] == '_'))
 		(*i)++;
 	var_len = *i - start;
 	var_name = ft_substr(content, start, var_len);
@@ -69,7 +82,7 @@ void	handle_env_variable(t_commandlist *mini, char *content, char *expanded, int
 	}
 }
 
-char *expand_env(t_commandlist *mini, char *content)
+char	*expand_env(t_commandlist *mini, char *content)
 {
 	int		i;
 	int		j;
@@ -106,7 +119,7 @@ char *expand_env(t_commandlist *mini, char *content)
 			}
 			else if (ft_isalnum(content[i]) || content[i] == '_')
 				handle_env_variable(mini, content, expanded, &i, &j);
-			continue;
+			continue ;
 		}
 		else
 			expanded[j++] = content[i++];
