@@ -54,8 +54,10 @@ void	boucle(t_commandlist *mini, int i)
 		if (g_signal == SIGINT)
 		{
 			g_signal = 0;
+			if (*input)
+				add_history(input);
 			free(input);
-			continue ;
+			continue;
 		}
 		if (*input)
 			add_history(input);
