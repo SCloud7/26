@@ -41,7 +41,6 @@ void	set_env(t_commandlist *mini, char **env)
 	i = 0;
 	if (!env || !*env)
 		exit(0);
-	mini->res = 2;
 	while (env[i])
 	{
 		newnode = malloc(sizeof(t_lst));
