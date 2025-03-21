@@ -30,21 +30,6 @@ void	free_args(t_arg *args)
 	}
 }
 
-void    free_env(t_commandlist *mini)
-{
-    t_lst *next_env;
-    t_lst *temp_env = mini->env;
-    while (temp_env)
-    {
-    next_env = temp_env->next;
-    if (temp_env->line)
-        free(temp_env->line);
-    free(temp_env);
-    temp_env = next_env;
-    }
-    mini->env = NULL;
-}
-
 void	free_command(t_command *cmd)
 {
 	t_command	*tmp;
