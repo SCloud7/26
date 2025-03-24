@@ -16,15 +16,23 @@ int	waiting_room(int *id, int j)
 {
 	int	i;
 	int	status;
+	int	last_exit_status;
 
+	last_exit_status = 0;
 	i = 0;
 	status = 0;
-	while (i < j--)
+	while (i < j)
 	{
-		waitpid(id[j], &status, 0);
+		waitpid(id[i], &status, 0);
+		if (WIFEXITED(status))
+		{
+			last_exit_status = WEXITSTATUS(status);
+			if (last_exit_status != 0)
+				break;
+		}
+		i++;
 	}
-	free(id);
-	return (status);
+	return (last_exit_status);
 }
 
 int	cr_fork(void)
