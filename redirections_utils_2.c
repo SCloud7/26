@@ -17,7 +17,7 @@ void	err_cmd(char **tab, char **tabb)
 	printf("%s: command not found\n", tabb[0]);
 	free_tab(tab);
 	free_tab(tabb);
-	// ft_exit(mini, NULL);
+	mini->res = 127;
 }
 
 void	clean_lst(t_lst *lst)
