@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_parsing_3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:54:35 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/19 00:20:28 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/24 13:23:51 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ void	append_node(t_commandlist *mini, char *env, t_lst *lst)
 	if (newnode == NULL)
 		return ;
 	newnode->next = NULL;
+	newnode->i = 0;
 	newnode->line = ft_strdup(env);
 	newnode->pre = NULL;
 

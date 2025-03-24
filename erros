@@ -1,7 +1,16 @@
-echo lala "dd"
+echo lala "dd" k
 "$"""
-echo hola"''''''''''"
+echo hola"''''''''''" 
+bon 
  export 8=?
  export %
  export HOL@=bonjour
- unset
+bon
+ unset k
+cd k
+heredoc 19->20 K
+$? 20 -> 21 
+export != env 21-22 K
+
+
+isatty

@@ -26,17 +26,15 @@ void	exe(t_commandlist *mini)
 		return ;
 	while (cur)
 	{
-		cr_pip(cur);
-		id[i] = cr_fork();
+		cr_pip(cur), id[i] = cr_fork();
 		if (id[i] == 0)
 		{
-			red(cur, mini);
 			child_pr(cur, mini);
 			free(id);
+			mini->res = 127;
 			ft_exit(mini, NULL);
 		}
-		close_pip(cur);
-		cur = cur->next;
+		close_pip(cur), cur = cur->next;
 		i++;
 	}
 	if (id)
@@ -72,6 +70,7 @@ void	child_pr(t_command *cmd, t_commandlist *mini)
 	char	*tmp;
 	int		i;
 
+	red(cmd, mini);
 	paths = findpath(mini);
 	i = 0;
 	cas(mini);

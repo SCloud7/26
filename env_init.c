@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:49:31 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/19 13:51:10 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/03/24 13:23:26 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	set_env(t_commandlist *mini, char **env)
 	i = 0;
 	if (!env || !*env)
 		exit(0);
+	mini->res = 2;
 	while (env[i])
 	{
 		newnode = malloc(sizeof(t_lst));
@@ -49,6 +50,7 @@ void	set_env(t_commandlist *mini, char **env)
 		newnode->line = ft_strdup(env[i]);
 		newnode->next = NULL;
 		newnode->pre = NULL;
+		newnode->i = 1;
 		if (!mini->env)
 			mini->env = newnode;
 		else

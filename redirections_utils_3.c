@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 16:11:14 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/19 14:07:44 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/03/24 14:55:29 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ int	waiting_room(int *id, int j)
 	i = 0;
 	status = 0;
 	while (i < j--)
+	{
 		waitpid(id[j], &status, 0);
+	}
 	free(id);
 	return (status);
 }

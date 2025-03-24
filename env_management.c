@@ -104,18 +104,11 @@ char	*expand_env(t_commandlist *mini, char *content)
 		return (NULL);
 	while (content[i])
 	{
-		if (content[i] == '"' && !in_single_quote)
+		if (content[i] == '"' || content[i] == '\'')
 		{
-			in_double_quote = !in_double_quote;
+			toggle_quote(content[i], &in_double_quote, &in_single_quote);
 			i++;
 		}
-		else if (content[i] == '\'' && !in_double_quote)
-		{
-			in_single_quote = !in_single_quote;
-			i++;
-		}
-		else if ((content[i] == '"' && in_single_quote) || (content[i] == '\'' && in_double_quote))
-			expanded[j++] = content[i++];
 		else if (content[i] == '$' && !in_single_quote)
 		{
 			i++;

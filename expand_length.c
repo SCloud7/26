@@ -77,21 +77,8 @@ int	calc_expand_length(t_commandlist *mini, char *content)
 	in_single_quote = 0;
 	while (content[i])
 	{
-		if (content[i] == '"' && !in_single_quote)
-		{
-			in_double_quote = !in_double_quote;
-			i++;
-		}
-		else if (content[i] == '\'' && !in_double_quote)
-		{
-			in_single_quote = !in_single_quote;
-			i++;
-		}
-		else if ((content[i] == '"' && in_single_quote) || (content[i] == '\'' && in_double_quote))
-		{
-			new_len++;
-			i++;
-		}
+		if (content[i] == '"' || content[i] == '\'')
+			toggle_quote(content[i++], &in_double_quote, &in_single_quote);
 		else if (content[i] == '$' && !in_single_quote)
 		{
 			i++;

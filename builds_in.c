@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   bulds_in.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2025/02/25 12:58:45 by marvin            #+#    #+#             */
 /*   Updated: 2025/02/25 12:58:45 by marvin           ###   ########.fr       */
 /*                                                                            */
@@ -12,9 +15,10 @@
 
 #include "minishell.h"
 
+
 void	build_in(t_commandlist *mini, char *input)
 {
-	char	*str;
+	char *str;
 
 	str = mini->cmd->args->content;
 	if (ft_strcmp(str, "exit", ft_strlen("exit")) == 0)
@@ -37,8 +41,8 @@ void	build_in(t_commandlist *mini, char *input)
 
 void	ft_exit(t_commandlist *mini, char *input)
 {
-	int		i;
-	t_arg	*cur;
+	int i;
+	t_arg *cur;
 
 	cur = mini->cmd->args->next;
 	if (!cur)
@@ -64,8 +68,10 @@ void	ft_exit(t_commandlist *mini, char *input)
 
 void	ft_echo(t_commandlist *mini)
 {
-	t_arg	*cur;
+	t_arg *cur;
+	int	i;
 
+	i = 1;
 	if (mini->cmd->next || !mini->cmd->args->next || mini->cmd->outfile
 		|| mini->cmd->infile || mini->cmd->append || mini->cmd->heredoc)
 	{
@@ -73,53 +79,53 @@ void	ft_echo(t_commandlist *mini)
 		return ;
 	}
 	cur = mini->cmd->args->next;
-	if (ft_strncmp(cur->content, "-n", 3) == 0)
+	while (cur->content[i] == 'n' && cur->content[0] == '-')
 	{
+		while (cur->content[i] == 'n')
+		{
+			i++;
+			if (cur->content[i] == '\0')
+				cur = cur->next;
+		}
 		while (cur && cur->next)
-		{
-			cur = cur->next;
-			printf("%s", cur->content);
-		}
+			cur = cur->next, printf("%s", cur->content);
+		return ;
 	}
-	else
-	{
-		while (cur)
-		{
-			printf("%s", cur->content);
-			cur = cur->next;
-		}
-		printf("\n");
-	}
+	while (cur)
+		printf("%s ", cur->content), cur = cur->next;
+	printf("\n");
 }
 
 void	ft_env(t_commandlist *mini)
 {
-	t_lst	*cur;
+	t_lst *cur;
 
-	if (mini->cmd->next || mini->cmd->outfile
-		|| mini->cmd->infile || mini->cmd->append || mini->cmd->heredoc)
+	if (mini->cmd->next || mini->cmd->outfile || mini->cmd->infile
+		|| mini->cmd->append || mini->cmd->heredoc)
 	{
 		exe(mini);
 		return ;
 	}
 	cur = (mini->env);
-	while (cur)
+	while (cur && cur->i == 1)
 	{
-		printf("%s \n", cur->line);
+		printf("%i %s \n", cur->i, cur->line);
 		cur = cur->next;
 	}
 }
 
 void	ft_unset(t_commandlist *mini)
 {
-	t_lst	*cur;
-	t_arg	*cur_a;
-	t_lst	*del;
-	t_lst	*prev;
+	t_lst *cur;
+	t_arg *cur_a;
+	t_lst *del;
+	t_lst *prev;
 
 	if (mini->cmd->next)
 		return ;
-	cur_a = mini->cmd->args;
+	cur_a = mini->cmd->args->next;
+	if (!cur_a)
+		return ;
 	while (cur_a)
 	{
 		cur = mini->env;
@@ -129,6 +135,8 @@ void	ft_unset(t_commandlist *mini)
 			if (ft_strncmp(cur->line, cur_a->content,
 					ft_strlen(cur_a->content)) == 0)
 			{
+				printf("la ligne de l env = %s\nla notre = %s\n", cur->line,
+					cur_a->content);
 				del = cur;
 				cur = cur->next;
 				if (del == mini->env)
@@ -139,15 +147,31 @@ void	ft_unset(t_commandlist *mini)
 					if (cur)
 						cur->pre = prev;
 				}
-				printf("jsp\n");
 				deletenode(del);
 				break ;
 			}
 			cur = cur->next;
+			prev = cur;
 		}
-		prev = cur;
+		cur_a = cur_a->next;
 	}
-	cur_a = cur_a->next;
+}
+
+t_arg	*n_case(t_arg *cur)
+{
+	int i;
+	t_arg *cc;
+
+	i = 1;
+	cc =cur;
+	while (cc)
+	{
+		while (cc->content[i] == 'n' && cc->content[0] == '-')
+			i++;
+		if (cc->content[i] == '\0')
+			cc = cc->next;
+	}
+	return (cc);
 }
 
 void	deletenode(t_lst *out)
@@ -175,7 +199,7 @@ void	deletenode(t_lst *out)
 
 int	ft_stri(char *str, char c)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (str[i] != c && str[i])
@@ -187,36 +211,64 @@ int	ft_stri(char *str, char c)
 
 void	ft_export(t_commandlist *mini)
 {
-	t_arg	*cur;
-	t_lst	*ev;
+	t_arg *cur;
 
 	if (mini->cmd->next || !mini)
 		return ;
 	cur = mini->cmd->args;
 	if (!cur->next)
-	{
-		ev = mini->env;
-		while (ev)
-		{
-			printf("export ");
-			printf("%s\n", ev->line);
-			ev = ev->next;
-		}
-	}
+		export_case_one(mini);
 	else
 	{
 		cur = cur->next;
 		while (cur)
 		{
-			if (ft_stri(cur->content, '=') == -1)
+			while (cur && export_case_two(cur) == 0)
+				cur = cur->next;
+			if (cur && ft_stri(cur->content, '=') == -1)
 				return ;
-			append_node(mini, ft_substr(cur->content, 0,
-					ft_strlen(cur->content)), mini->env);
-			cur = cur->next;
+			if (cur)
+			{
+				append_node(mini, ft_substr(cur->content, 0,
+						ft_strlen(cur->content)), mini->env);
+				cur = cur->next;
+			}
 		}
 	}
 }
 
+void	export_case_one(t_commandlist *mini)
+{
+	t_lst *ev;
+
+	ev = mini->env;
+	while (ev)
+	{
+		printf("export ");
+		printf("%s\n", ev->line);
+		ev = ev->next;
+	}
+}
+
+int	export_case_two(t_arg *cur)
+{
+	int i;
+
+	i = 0;
+	if (ft_isdigit(cur->content[0]) == 1)
+		return (printf("bash: export: `%s': not a valid identifier\n",
+				cur->content), 0);
+	while (cur->content[i])
+	{
+		printf("la= %c\n\n\n", cur->content[i]);
+		if (ft_isalnum(cur->content[i]) == 1 || cur->content[i] == '=')
+			i++;
+		else
+			return (printf("bash: export: `%s': not a valid identifier\n",
+					cur->content), 0);
+	}
+	return (1);
+}
 void	ft_pwd(t_commandlist *mini)
 {
 	if (mini->cmd->next || !mini->cmd->args->next || mini->cmd->outfile
@@ -230,8 +282,14 @@ void	ft_pwd(t_commandlist *mini)
 
 void	ft_cd(t_commandlist *mini)
 {
-	t_arg	*cur;
+	t_arg *cur;
 
+	cur = mini->cmd->args;
+	if (!cur->next)
+	{
+		chdir("/home");
+		return ;
+	}
 	cur = mini->cmd->args->next;
 	if (cur->next)
 	{
@@ -253,7 +311,7 @@ void	ft_cd(t_commandlist *mini)
 
 int	isnum(char *str)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (str[i])

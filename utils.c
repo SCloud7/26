@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:20:05 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/19 18:01:08 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/03/23 19:22:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,9 @@ void	redirect_lines(t_lst *lst)
 		write(pipes[1], act->line, ft_strlen(act->line));
 		write(pipes[1], "\n", 1);
 		act = act->next;
-		printf("line = %s\n", act->line);
 	}
+	close(pipes[1]);
 	dup2(pipes[0], STDIN_FILENO);
 	close(pipes[0]);
-	close(pipes[1]);
 	clean_lst(lst);
 }

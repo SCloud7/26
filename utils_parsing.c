@@ -64,27 +64,26 @@ char *ft_strndup(const char *str, size_t n)
 	return (res);
 }
 
-int	open_quote(char *input)
+int open_quote(char *input)
 {
-	int		i;
-    int		in_single_quote;
-    int		in_double_quote;
+	int i;
+	char quote;
 
-	in_double_quote = 0;
-	in_single_quote = 0;
 	i = 0;
+	if (!input)
+		return (0);
 	while (input[i])
 	{
-		if (input[i] == '"' && !in_single_quote)
-			in_double_quote = !in_double_quote;
-		else if (input[i] == '\'' && !in_double_quote)
-			in_single_quote = !in_single_quote;
+		if (input[i] == '\'' || input[i] == '"')
+		{
+			quote = input[i];
+			i++;
+			while (input[i] && input[i] != quote)
+				i++;
+			if (!input[i])
+				return (1);
+		}
 		i++;
-	}
-	if (in_single_quote || in_double_quote)
-	{
-		printf("Syntax error: unclosed quote\n");
-		return (1);
 	}
 	return (0);
 }

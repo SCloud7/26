@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 16:04:36 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/19 14:10:12 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/03/24 15:15:21 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,16 +95,11 @@ void	add_file(t_command *cur)
 void	her_doc(t_command *cur, t_commandlist *mini)
 {
 	t_arg	*fil;
-	t_lst	**lst;
 
 	fil = cur->heredoc;
 	if (!fil)
 		return ;
-	lst = malloc(sizeof(t_lst *));
-	if (!lst)
-		return ;
 	if (fil->content == NULL || fil->content[0] == '\0')
 		ft_exit(mini, NULL);
-	*lst = NULL;
-	her_doc_p2(fil, NULL, lst);
+	her_doc_p2(fil);
 }
