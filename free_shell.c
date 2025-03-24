@@ -83,6 +83,9 @@ void	free_shell(t_commandlist *mini)
 
 void	clean_up_and_exit(char *input, t_commandlist *mini)
 {
+	int	i;
+
+	i = mini->res;
 	if (input)
 		free(input);
 	if (mini->env)
@@ -91,7 +94,7 @@ void	clean_up_and_exit(char *input, t_commandlist *mini)
 		free_shell(mini);
 	free(mini);
 	rl_clear_history();
-	exit(0);
+	exit(i);
 }
 
 void	free_lst(t_lst *lst)
