@@ -30,16 +30,12 @@ t_commandlist	*init_shell(void)
 
 void	signal_handler(int sig)
 {
-	if (sig == SIGINT)
-	{
-		g_signal = SIGINT;
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	else if (sig == SIGQUIT)
-		signal(SIGQUIT, SIG_IGN);
+	(void)sig;
+	g_signal = SIGINT;
+	write(1, "\n", 1);
+    	rl_on_new_line();
+    	rl_replace_line("", 0);
+    	rl_redisplay(); 
 }
 
 void	boucle(t_commandlist *mini, int i)
@@ -48,17 +44,10 @@ void	boucle(t_commandlist *mini, int i)
 
 	while (1)
 	{
+		g_signal = 0;
 		input = readline("user:");
 		if (!input)
 			break ;
-		if (g_signal == SIGINT)
-		{
-			g_signal = 0;
-			if (*input)
-				add_history(input);
-			free(input);
-			continue;
-		}
 		if (*input)
 			add_history(input);
 		if (parsing(input, mini) != 0)
@@ -76,7 +65,6 @@ void	boucle(t_commandlist *mini, int i)
 void	init_base(t_commandlist *mini, char **env)
 {
 	set_env(mini, env);
-	signal(SIGQUIT, signal_handler);
 	signal(SIGINT, signal_handler);
 }
 
