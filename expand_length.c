@@ -88,7 +88,10 @@ int	calc_expand_length(t_commandlist *mini, char *content)
 			i++;
 		}
 		else if ((content[i] == '"' && in_single_quote) || (content[i] == '\'' && in_double_quote))
+		{
 			new_len++;
+			i++;
+		}
 		else if (content[i] == '$' && !in_single_quote)
 		{
 			i++;
