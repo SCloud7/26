@@ -120,7 +120,6 @@ void	append_node(t_commandlist *mini, char *env, t_lst *lst)
 	if (newnode == NULL)
 		return ;
 	newnode->next = NULL;
-	newnode->i = 0;
 	newnode->line = ft_strdup(env);
 	newnode->pre = NULL;
 
