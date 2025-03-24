@@ -23,7 +23,7 @@ int	check_redirection_syntax(char *input, int *i)
 	while (isspace(input[*i]))
 		(*i)++;
 	if (input[*i] == '\0' || input[*i] == '>'
-		|| input[*i] == '<' || input[*i] == '|')
+		|| (input[*i] == '<' && input[*i + 1] != '<') || input[*i] == '|')
 	{
 		printf("Syntax error near unexpected token\n");
 		return (1);
