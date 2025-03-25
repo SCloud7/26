@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils_2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 16:09:10 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/24 16:01:58 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/03/25 13:15:36 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	err_cmd(char **tab, char **tabb)
+void	err_cmd(t_commandlist *mini, char **tab, char **tabb)
 {
 	printf("%s: command not found\n", tabb[0]);
 	free_tab(tab);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:49:31 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/24 13:23:26 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/03/25 14:32:58 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	set_env(t_commandlist *mini, char **env)
 	i = 0;
 	if (!env || !*env)
 		exit(0);
-	mini->res = 2;
 	while (env[i])
 	{
 		newnode = malloc(sizeof(t_lst));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_management.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:51:28 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/19 13:53:46 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/03/25 15:07:22 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,15 @@ void	expand_args(t_commandlist *mini, t_arg *to_expand)
 void	handle_exit_status(t_commandlist *mini, char *expanded, int *j)
 {
 	char	*exit_char;
+	int		i;
 	int		k;
 
-	exit_char = ft_itoa(mini->res);
+	exit_char = NULL;
+	i = mini->res;
+	k = 0;
+	exit_char = ft_itoa(i);
 	if (!exit_char)
 		return ;
-	k = 0;
 	while (exit_char[k])
 		expanded[(*j)++] = exit_char[k++];
 	free(exit_char);

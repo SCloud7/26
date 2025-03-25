@@ -37,8 +37,8 @@ void	exe(t_commandlist *mini)
 		close_pip(cur), cur = cur->next;
 		i++;
 	}
-	if (id)
-		mini->res = waiting_room(id, i);
+	mini->res = waiting_room(id, i);
+	free(id);
 }
 
 char	**findpath(t_commandlist *mini)
@@ -84,7 +84,7 @@ void	child_pr(t_command *cmd, t_commandlist *mini)
 			execve(cmde, argss, NULL);
 		free(cmde);
 	}
-	err_cmd(paths, argss);
+	err_cmd(mini, paths, argss);
 }
 
 void	cas(t_commandlist *mini)

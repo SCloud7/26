@@ -190,7 +190,7 @@ int	cmd_len(t_command *cmd);
 void	verif_pipe(t_command *cur);
 int	waiting_room(int *id, int j);
 int	cr_fork(void);
-void	err_cmd(char **tab, char **tabb);
+void	err_cmd(t_commandlist *mini, char **tab, char **tabb);
 void	close_pip(t_command *cur);
 void	free_lst(t_lst *lst);
 int	ft_strcmp(char *s1, char *s2, int j);

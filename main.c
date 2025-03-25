@@ -24,7 +24,6 @@ t_commandlist	*init_shell(void)
 	mini->tokens = NULL;
 	mini->cmd = NULL;
 	mini->env = NULL;
-	mini->res = 0;
 	return (mini);
 }
 
@@ -35,23 +34,23 @@ void	signal_handler(int sig)
 	write(1, "\n", 1);
     rl_on_new_line();
     rl_replace_line("", 0);
-    rl_redisplay(); 
+    rl_redisplay();
 }
 
 void	boucle(t_commandlist *mini)
 {
 	char	*input;
 
+	mini->res = 0;
 	while (1)
 	{
-		mini->res = 0;
 		g_signal = 0;
 		input = readline("user:");
 		if (!input)
 			break ;
 		if (*input)
 			add_history(input);
-		if (parsing(input, mini) != 0)
+		if (parsing(input, mini) != 0) 
 		{
 			free(input);
 			free_shell(mini);

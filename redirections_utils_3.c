@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils_3.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 16:11:14 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/24 14:55:29 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/03/25 13:41:25 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,7 @@ int	waiting_room(int *id, int j)
 	{
 		waitpid(id[i], &status, 0);
 		if (WIFEXITED(status))
-		{
 			last_exit_status = WEXITSTATUS(status);
-			if (last_exit_status != 0)
-				break;
-		}
 		i++;
 	}
 	return (last_exit_status);

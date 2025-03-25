@@ -10,47 +10,45 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include<stddef.h>
 #include"libft.h"
 
-int	lenint(int n)
+int lenint(int n)
 {
-	int		len;
+	int len;
 
 	len = 0;
 	if (n <= 0)
-		len ++;
+		len++;
 	while (n)
 	{
-		n /= 10;
-		len++;
+	n /= 10;
+	len++;
 	}
-	return (len);
+	return len;
 }
 
-char	*ft_itoa(int n)
+char *ft_itoa(int n)
 {
-	char	*str;
-	int		len;
-	long	nb;
+	char *str;
+	int len;
+	long long nb;
 
 	nb = n;
-	len = lenint(nb);
-	str = (char *) malloc(len + 1 * sizeof(char));
-	if (!str)
-		return (NULL);
+	len = lenint(n);
+	if ((str = (char *)malloc((len + 1) * sizeof(char))) == NULL)
+		return NULL;
 	str[len] = '\0';
 	if (nb < 0)
 	{
 		str[0] = '-';
 		nb = -nb;
 	}
-	while ((len -- > 0))
+	if (n == 0)
+		str[0] = '0';
+	while (nb)
 	{
-		if (str[len] == '-')
-			break ;
-		str[len] = nb % 10 + '0';
+		str[--len] = (nb % 10) + '0';
 		nb /= 10;
 	}
-	return (str);
+	return str;
 }
