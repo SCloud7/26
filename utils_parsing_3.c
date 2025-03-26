@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_parsing_3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:54:35 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/24 13:23:51 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:47:12 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int	add_token(t_commandlist *mini, t_token_type type, char *token_value)
 			temp = temp->next;
 		temp->next = new_token;
 	}
-	printf("Création du token -> Adresse : %p, Valeur : %p (%s), Type : %d\n", (void *)new_token, (void *)new_token->value, new_token->value, new_token->type);
 	return (0);
 }
 

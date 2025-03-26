@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:51:28 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/25 15:07:22 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/26 17:01:45 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ char	*expand_env(t_commandlist *mini, char *content)
 	if (!content)
 		return (NULL);
 	new_len = calc_expand_length(mini, content);
-	printf("NEWLEN %d\n", new_len);
 	expanded = malloc(new_len + 1);
 	if (!expanded)
 		return (NULL);
@@ -122,7 +121,9 @@ char	*expand_env(t_commandlist *mini, char *content)
 		else if (content[i] == '$' && !in_single_quote)
 		{
 			i++;
-			if (content[i] == '?')
+			if (content[i] == '\0' || isspace(content[i]))
+				expanded[j++] = '$';
+			else if (content[i] == '?')
 			{
 				handle_exit_status(mini, expanded, &j);
 				i++;

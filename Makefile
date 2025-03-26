@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = mini
+NAME = minishell
 CC = cc
 HEAD = .
 CFLAGS = -g3 -Wall -Werror -Wextra

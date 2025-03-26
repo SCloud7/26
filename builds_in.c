@@ -52,7 +52,7 @@ void	ft_exit(t_commandlist *mini, char *input)
 		clean_up_and_exit(input, mini);
 	if (cur->next)
 	{
-		printf("trop d arg\n\n");
+		printf("too many arguments\n");
 		return ;
 	}
 	else
@@ -67,6 +67,17 @@ void	ft_exit(t_commandlist *mini, char *input)
 			clean_up_and_exit(input, mini);
 	}
 	return ;
+}
+
+void	print_echo(t_arg *cur)
+{
+	while (cur)
+	{
+		printf("%s", cur->content);
+		if (cur->next)
+			printf(" ");
+		cur = cur->next;
+	}
 }
 
 int		ft_echo(t_commandlist *mini)
@@ -90,12 +101,10 @@ int		ft_echo(t_commandlist *mini)
 			if (cur->content[i] == '\0')
 				cur = cur->next;
 		}
-		while (cur && cur->next)
-			cur = cur->next, printf("%s", cur->content);
+		print_echo(cur);
 		return (0);
 	}
-	while (cur)
-		printf("%s ", cur->content), cur = cur->next;
+	print_echo(cur);
 	printf("\n");
 	return (0);
 }

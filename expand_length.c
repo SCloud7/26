@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_length.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:51:20 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/19 14:27:21 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/03/26 17:02:12 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,9 @@ int	calc_expand_length(t_commandlist *mini, char *content)
 		else if (content[i] == '$' && !in_single_quote)
 		{
 			i++;
-			if (content[i] == '?')
+			if (content[i] == '\0' || isspace(content[i]))
+				new_len++;
+			else if (content[i] == '?')
 			{
 				new_len += ft_numlen(mini->res);
 				i++;
