@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 11:51:41 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/26 18:06:08 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/26 20:18:09 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	check_redirection_syntax(char *input, int *i)
 	if (input[*i] == '\0' || input[*i] == '>'
 		|| (input[*i] == '<' && input[*i + 1] != '<') || input[*i] == '|')
 	{
-		printf("Syntax error near unexpected token\n");
-		return (1);
+		printf("Syntax error near unexpected token \n");
+		return (2);
 	}
 	return (0);
 }
@@ -39,8 +39,8 @@ int	check_pipe_syntax(char *input, int *i)
 	if (input[*i] == '\0' || input[*i] == '>'
 		|| input[*i] == '<' || input[*i] == '|')
 	{
-		printf("Syntax error near unexpected token\n");
-		return (1);
+		printf("Syntax error near unexpected token `|'\n");
+		return (2);
 	}
 	return (0);
 }
@@ -54,8 +54,8 @@ int	checking_syntax(char *input)
 	if (input[i] == '|' || (input[i] == '<' && input[i + 1] != '<')
 		|| input[i] == '>')
 	{
-		printf("Syntax error near unexpected token\n");
-		return (1);
+		printf("Syntax error near unexpected token `%c`\n", input[i]);
+		return (2);
 	}
 	while (input[i])
 	{
@@ -70,12 +70,12 @@ int	checking_syntax(char *input)
 		else if (input[i] == '>' || input[i] == '<')
 		{
 			if (check_redirection_syntax(input, &i))
-				return (1);
+				return (2);
 		}
 		else if (input[i] == '|')
 		{
 			if (check_pipe_syntax(input, &i))
-				return (1);
+				return (2);
 		}
 		else
 			i++;

@@ -96,7 +96,10 @@ int	lexing(char *input, t_commandlist *mini)
 int	parsing(char *input, t_commandlist *mini)
 {
 	if (checking_error_before(input))
+	{
+		mini->res = 2;
 		return (1);
+	}
 	if (lexing(input, mini) == 1)
 		return (1);
 	if (parse_token(mini) == 1)

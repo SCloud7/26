@@ -44,7 +44,6 @@ void	build_in(t_commandlist *mini, char *input)
 
 void	ft_exit(t_commandlist *mini, char *input)
 {
-	int i;
 	t_arg *cur;
 
 	cur = mini->cmd->args->next;
@@ -52,20 +51,11 @@ void	ft_exit(t_commandlist *mini, char *input)
 		clean_up_and_exit(input, mini);
 	if (cur->next)
 	{
-		printf("too many arguments\n");
+		perror("too many arguments\n");
 		return ;
 	}
 	else
-	{
-		if (isnum(cur->content) == 0)
-		{
-			i = ft_atoi(cur->content);
-			mini->res = i;
-			clean_up_and_exit(input, mini);
-		}
-		else
-			clean_up_and_exit(input, mini);
-	}
+		clean_up_and_exit(input, mini);
 	return ;
 }
 

@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 16:09:10 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/25 13:15:36 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/26 20:21:37 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	err_cmd(t_commandlist *mini, char **tab, char **tabb)
 {
-	printf("%s: command not found\n", tabb[0]);
+	printf("command not found\n");
 	free_tab(tab);
 	free_tab(tabb);
 	mini->res = 127;

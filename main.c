@@ -24,6 +24,7 @@ t_commandlist	*init_shell(void)
 	mini->tokens = NULL;
 	mini->cmd = NULL;
 	mini->env = NULL;
+	mini->res = 0;
 	return (mini);
 }
 
