@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_parsing_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 11:51:41 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/19 14:16:08 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/03/26 18:06:08 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	check_pipe_syntax(char *input, int *i)
 int	checking_syntax(char *input)
 {
 	int	i;
+	int	quote;
 
 	i = 0;
 	if (input[i] == '|' || (input[i] == '<' && input[i + 1] != '<')
@@ -58,7 +59,15 @@ int	checking_syntax(char *input)
 	}
 	while (input[i])
 	{
-		if (input[i] == '>' || input[i] == '<')
+		if (input[i] == '"' || input[i] == '\'')
+		{
+			quote = input[i];
+			i++;
+			while (input[i] && input[i] != quote)
+				i++;
+			i++;
+		}
+		else if (input[i] == '>' || input[i] == '<')
 		{
 			if (check_redirection_syntax(input, &i))
 				return (1);

@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:51:28 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/26 17:01:45 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/26 18:34:58 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,26 @@ void	handle_env_variable(t_commandlist *mini, char *content, char *expanded, int
 	}
 }
 
+int	is_at_end(char *content, int i)
+{
+	int	in_double_quote;
+	int	in_single_quote;
+
+	in_double_quote = 0;
+	in_single_quote = 0;
+	if (content[i] == '\0')
+		return (1);
+	while (content[i] && (in_single_quote || in_double_quote))
+	{
+		if (content[i] == '"' && !in_single_quote)
+			in_double_quote = !in_double_quote;
+		else if (content[i] == '\'' && !in_double_quote)
+			in_single_quote = !in_single_quote;
+		i++;
+	}
+	return (content[i] == '\0' || (content[i] == '"' && !in_single_quote) || (content[i] == '\'' && !in_double_quote));
+}
+
 char	*expand_env(t_commandlist *mini, char *content)
 {
 	int		i;
@@ -121,7 +141,7 @@ char	*expand_env(t_commandlist *mini, char *content)
 		else if (content[i] == '$' && !in_single_quote)
 		{
 			i++;
-			if (content[i] == '\0' || isspace(content[i]))
+			if (content[i] == '\0' || isspace(content[i]) || is_at_end(content, i))
 				expanded[j++] = '$';
 			else if (content[i] == '?')
 			{

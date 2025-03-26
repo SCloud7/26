@@ -149,8 +149,6 @@ int		ft_unset(t_commandlist *mini)
 			if (ft_strncmp(cur->line, cur_a->content,
 					ft_strlen(cur_a->content)) == 0)
 			{
-				printf("la ligne de l env = %s\nla notre = %s\n", cur->line,
-					cur_a->content);
 				del = cur;
 				cur = cur->next;
 				if (del == mini->env)
@@ -276,7 +274,6 @@ int	export_case_two(t_arg *cur)
 				cur->content), 0);
 	while (cur->content[i])
 	{
-		printf("la= %c\n\n\n", cur->content[i]);
 		if (ft_isalnum(cur->content[i]) == 1 || cur->content[i] == '=')
 			i++;
 		else
