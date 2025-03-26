@@ -41,7 +41,6 @@ void	boucle(t_commandlist *mini)
 {
 	char	*input;
 
-	mini->res = 0;
 	while (1)
 	{
 		g_signal = 0;

@@ -145,13 +145,13 @@ void	clean_up_and_exit(char *input, t_commandlist *mini);
 // build_in
 void	build_in(t_commandlist *mini, char *input);
 void	ft_exit(t_commandlist *mini, char *input);
-void	ft_echo(t_commandlist *mini);
-void	ft_env(t_commandlist *mini);
-void	ft_unset(t_commandlist *mini);
-void	ft_export(t_commandlist *mini);
-void	ft_pwd(t_commandlist *mini);
-void	ft_cd(t_commandlist *mini);
-int	export_case_two(t_arg *cur);
+int		ft_echo(t_commandlist *mini);
+int		ft_env(t_commandlist *mini);
+int		ft_unset(t_commandlist *mini);
+int		ft_export(t_commandlist *mini);
+int		ft_pwd(t_commandlist *mini);
+int		ft_cd(t_commandlist *mini);
+int		export_case_two(t_arg *cur);
 void	export_case_one(t_commandlist *mini);
 t_arg	*n_case(t_arg *cur);
 

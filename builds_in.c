@@ -18,25 +18,28 @@
 
 void	build_in(t_commandlist *mini, char *input)
 {
-	char *str;
+	char	*str;
+	int		status;
 
+	status = 0;
 	str = mini->cmd->args->content;
 	if (ft_strcmp(str, "exit", ft_strlen("exit")) == 0)
 		ft_exit(mini, input);
 	else if (ft_strcmp(str, "echo", ft_strlen("echo")) == 0)
-		ft_echo(mini);
+		status = ft_echo(mini);
 	else if (ft_strcmp(str, "env", ft_strlen("env")) == 0)
-		ft_env(mini);
+		status = ft_env(mini);
 	else if (ft_strcmp(str, "unset", ft_strlen("unset")) == 0)
-		ft_unset(mini);
+		status = ft_unset(mini);
 	else if (ft_strcmp(str, "export", ft_strlen("export")) == 0)
-		ft_export(mini);
+		status = ft_export(mini);
 	else if (ft_strcmp(str, "pwd", ft_strlen("pwd")) == 0)
-		ft_pwd(mini);
+		status = ft_pwd(mini);
 	else if (ft_strcmp(str, "cd", ft_strlen("cd")) == 0)
-		ft_cd(mini);
+		status = ft_cd(mini);
 	else
-		exe(mini);
+		return (exe(mini));
+	mini->res = status;
 }
 
 void	ft_exit(t_commandlist *mini, char *input)
@@ -66,7 +69,7 @@ void	ft_exit(t_commandlist *mini, char *input)
 	return ;
 }
 
-void	ft_echo(t_commandlist *mini)
+int		ft_echo(t_commandlist *mini)
 {
 	t_arg *cur;
 	int	i;
@@ -76,7 +79,7 @@ void	ft_echo(t_commandlist *mini)
 		|| mini->cmd->infile || mini->cmd->append || mini->cmd->heredoc)
 	{
 		exe(mini);
-		return ;
+		return (0);
 	}
 	cur = mini->cmd->args->next;
 	while (cur->content[i] == 'n' && cur->content[0] == '-')
@@ -89,14 +92,15 @@ void	ft_echo(t_commandlist *mini)
 		}
 		while (cur && cur->next)
 			cur = cur->next, printf("%s", cur->content);
-		return ;
+		return (0);
 	}
 	while (cur)
 		printf("%s ", cur->content), cur = cur->next;
 	printf("\n");
+	return (0);
 }
 
-void	ft_env(t_commandlist *mini)
+int		ft_env(t_commandlist *mini)
 {
 	t_lst *cur;
 
@@ -104,7 +108,7 @@ void	ft_env(t_commandlist *mini)
 		|| mini->cmd->append || mini->cmd->heredoc)
 	{
 		exe(mini);
-		return ;
+		return (0);
 	}
 	cur = (mini->env);
 	while (cur && cur->i == 1)
@@ -112,9 +116,10 @@ void	ft_env(t_commandlist *mini)
 		printf("%i %s \n", cur->i, cur->line);
 		cur = cur->next;
 	}
+	return (0);
 }
 
-void	ft_unset(t_commandlist *mini)
+int		ft_unset(t_commandlist *mini)
 {
 	t_lst *cur;
 	t_arg *cur_a;
@@ -122,10 +127,10 @@ void	ft_unset(t_commandlist *mini)
 	t_lst *prev;
 
 	if (mini->cmd->next)
-		return ;
+		return (0);
 	cur_a = mini->cmd->args->next;
 	if (!cur_a)
-		return ;
+		return (0);
 	while (cur_a)
 	{
 		cur = mini->env;
@@ -155,6 +160,7 @@ void	ft_unset(t_commandlist *mini)
 		}
 		cur_a = cur_a->next;
 	}
+	return (0);
 }
 
 t_arg	*n_case(t_arg *cur)
@@ -209,12 +215,12 @@ int	ft_stri(char *str, char c)
 	return (-1);
 }
 
-void	ft_export(t_commandlist *mini)
+int	ft_export(t_commandlist *mini)
 {
 	t_arg *cur;
 
 	if (mini->cmd->next || !mini)
-		return ;
+		return (0);
 	cur = mini->cmd->args;
 	if (!cur->next)
 		export_case_one(mini);
@@ -226,7 +232,7 @@ void	ft_export(t_commandlist *mini)
 			while (cur && export_case_two(cur) == 0)
 				cur = cur->next;
 			if (cur && ft_stri(cur->content, '=') == -1)
-				return ;
+				return (0);
 			if (cur)
 			{
 				append_node(mini, ft_substr(cur->content, 0,
@@ -235,6 +241,7 @@ void	ft_export(t_commandlist *mini)
 			}
 		}
 	}
+	return (0);
 }
 
 void	export_case_one(t_commandlist *mini)
@@ -269,18 +276,19 @@ int	export_case_two(t_arg *cur)
 	}
 	return (1);
 }
-void	ft_pwd(t_commandlist *mini)
+int	ft_pwd(t_commandlist *mini)
 {
 	if (mini->cmd->next || !mini->cmd->args->next || mini->cmd->outfile
 		|| mini->cmd->infile || mini->cmd->append || mini->cmd->heredoc)
 	{
 		exe(mini);
-		return ;
+		return (0);
 	}
 	printf("%s\n", getcwd(NULL, 100));
+	return (0);
 }
 
-void	ft_cd(t_commandlist *mini)
+int	ft_cd(t_commandlist *mini)
 {
 	t_arg *cur;
 
@@ -288,25 +296,26 @@ void	ft_cd(t_commandlist *mini)
 	if (!cur->next)
 	{
 		chdir("/home");
-		return ;
+		return (0);
 	}
 	cur = mini->cmd->args->next;
 	if (cur->next)
 	{
 		printf("too many arguments\n");
-		return ;
+		return (0);
 	}
 	if (mini->cmd->next || !mini->cmd->args->next || mini->cmd->outfile
 		|| mini->cmd->infile || mini->cmd->append || mini->cmd->heredoc)
 	{
 		exe(mini);
-		return ;
+		return (0);
 	}
 	else if (chdir(cur->content) == -1)
 	{
 		printf("directory problem\n");
-		return ;
+		return (0);
 	}
+	return (0);
 }
 
 int	isnum(char *str)
