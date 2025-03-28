@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:51:28 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/26 18:34:58 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/28 02:41:42 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,8 @@ void	expand_args(t_commandlist *mini, t_arg *to_expand)
 	}
 }
 
-void	handle_exit_status(t_commandlist *mini, char *expanded, int *j)
-{
-	char	*exit_char;
-	int		i;
-	int		k;
-
-	exit_char = NULL;
-	i = mini->res;
-	k = 0;
-	exit_char = ft_itoa(i);
-	if (!exit_char)
-		return ;
-	while (exit_char[k])
-		expanded[(*j)++] = exit_char[k++];
-	free(exit_char);
-}
-
-void	handle_env_variable(t_commandlist *mini, char *content, char *expanded, int *i, int *j)
+void	handle_env_variable(t_commandlist *mini, char *content,
+								char *expanded, t_expand *exp)
 {
 	int		start;
 	int		var_len;
@@ -67,11 +51,11 @@ void	handle_env_variable(t_commandlist *mini, char *content, char *expanded, int
 	char	*env_temp;
 	int		k;
 
-	start = *i;
-	while (content[*i] && (ft_isalnum(content[*i])
-			||content[*i] == '_'))
-		(*i)++;
-	var_len = *i - start;
+	start = exp->i;
+	while (content[exp->i] && (ft_isalnum(content[exp->i])
+			||content[exp->i] == '_'))
+		exp->i++;
+	var_len = exp->i - start;
 	var_name = ft_substr(content, start, var_len);
 	if (!var_name)
 		return ;
@@ -81,80 +65,52 @@ void	handle_env_variable(t_commandlist *mini, char *content, char *expanded, int
 	{
 		k = 0;
 		while (env_temp[k])
-			expanded[(*j)++] = env_temp[k++];
+			expanded[exp->j++] = env_temp[k++];
 	}
 }
 
-int	is_at_end(char *content, int i)
+void	expand_loop(t_commandlist *mini, char *content,
+	t_expand *exp, char *expanded)
 {
-	int	in_double_quote;
-	int	in_single_quote;
-
-	in_double_quote = 0;
-	in_single_quote = 0;
-	if (content[i] == '\0')
-		return (1);
-	while (content[i] && (in_single_quote || in_double_quote))
+	while (content[exp->i] && exp->i < ft_strlen(content))
 	{
-		if (content[i] == '"' && !in_single_quote)
-			in_double_quote = !in_double_quote;
-		else if (content[i] == '\'' && !in_double_quote)
-			in_single_quote = !in_single_quote;
-		i++;
+		if (content[exp->i] == '"' || content[exp->i] == '\'')
+			handle_quotes(expanded, content, exp);
+		else if (content[exp->i] == '$' && !exp->in_single_quote)
+		{
+			exp->i++;
+			if (content[exp->i] == '\0' || isspace(content[exp->i])
+				|| is_at_end(content, exp->i))
+				expanded[exp->j++] = '$';
+			else if (content[exp->i] == '?')
+			{
+				handle_exit_status(mini, expanded, &exp->j);
+				exp->i++;
+			}
+			else if (ft_isalnum(content[exp->i]) || content[exp->i] == '_')
+				handle_env_variable(mini, content, expanded, exp);
+			else
+				continue ;
+		}
+		else
+			expanded[exp->j++] = content[exp->i++];
 	}
-	return (content[i] == '\0' || (content[i] == '"' && !in_single_quote) || (content[i] == '\'' && !in_double_quote));
 }
 
 char	*expand_env(t_commandlist *mini, char *content)
 {
-	int		i;
-	int		j;
-	int		in_double_quote;
-	int		in_single_quote;
-	char	*expanded;
-	int		new_len;
+	t_expand	exp;
+	char		*expanded;
+	int			new_len;
 
-	j = 0;
-	i = 0;
-	in_double_quote = 0;
-	in_single_quote = 0;
+	exp = (t_expand){0, 0, 0, 0};
 	if (!content)
 		return (NULL);
 	new_len = calc_expand_length(mini, content);
 	expanded = malloc(new_len + 1);
 	if (!expanded)
 		return (NULL);
-	while (content[i])
-	{
-		if (content[i] == '"' && !in_single_quote)
-		{
-			in_double_quote = !in_double_quote;
-			i++;
-		}
-		else if (content[i] == '\'' && !in_double_quote)
-		{
-			in_single_quote = !in_single_quote;
-			i++;
-		}
-		else if ((content[i] == '"' && in_single_quote) || (content[i] == '\'' && in_double_quote))
-			expanded[j++] = content[i++];
-		else if (content[i] == '$' && !in_single_quote)
-		{
-			i++;
-			if (content[i] == '\0' || isspace(content[i]) || is_at_end(content, i))
-				expanded[j++] = '$';
-			else if (content[i] == '?')
-			{
-				handle_exit_status(mini, expanded, &j);
-				i++;
-			}
-			else if (ft_isalnum(content[i]) || content[i] == '_')
-				handle_env_variable(mini, content, expanded, &i, &j);
-			continue ;
-		}
-		else
-			expanded[j++] = content[i++];
-	}
-	expanded[j] = '\0';
+	expand_loop(mini, content, &exp, expanded);
+	expanded[exp.j] = '\0';
 	return (expanded);
 }

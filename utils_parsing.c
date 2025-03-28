@@ -12,44 +12,41 @@
 
 #include "minishell.h"
 
-int ispace(char c)
+int	ispace(char c)
 {
-	if (c == ' ' || c == '\n' || c == '\r' || c == '\f' || c == '\t' || c == '\v')
+	if (c == ' ' || c == '\n' || c == '\r' || c == '\f'
+		|| c == '\t' || c == '\v')
 		return (1);
 	return (0);
 }
 
-int is_special(char c)
+int	is_special(char c)
 {
 	if (c == '|' || c == '<' || c == '>')
 		return (1);
 	return (0);
 }
 
-int only_space(char *input)
+int	only_space(char *input)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!input || input[0] == '\0')
-	{
-		//printf("\n");
 		return (1);
-	}
 	while (input[i])
 	{
 		if (!ispace(input[i]))
 			return (0);
 		i++;
 	}
-	printf("\n");
 	return (1);
 }
 
-char *ft_strndup(const char *str, size_t n)
+char	*ft_strndup(const char *str, size_t n)
 {
-	char *res;
-	size_t i;
+	char	*res;
+	size_t	i;
 
 	i = 0;
 	res = (char *)malloc(n + 1);
@@ -67,8 +64,8 @@ char *ft_strndup(const char *str, size_t n)
 int	open_quote(char *input)
 {
 	int		i;
-    int		in_single_quote;
-    int		in_double_quote;
+	int		in_single_quote;
+	int		in_double_quote;
 
 	in_double_quote = 0;
 	in_single_quote = 0;
@@ -83,7 +80,7 @@ int	open_quote(char *input)
 	}
 	if (in_single_quote || in_double_quote)
 	{
-		printf("Syntax error: unclosed quote\n");
+		write(2, "Syntax error: unclosed quote\n", 30);
 		return (1);
 	}
 	return (0);

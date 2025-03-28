@@ -33,9 +33,9 @@ void	signal_handler(int sig)
 	(void)sig;
 	g_signal = SIGINT;
 	write(1, "\n", 1);
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 void	boucle(t_commandlist *mini)
@@ -50,7 +50,7 @@ void	boucle(t_commandlist *mini)
 			break ;
 		if (*input)
 			add_history(input);
-		if (parsing(input, mini) != 0) 
+		if (parsing(input, mini) != 0)
 		{
 			free(input);
 			free_shell(mini);
@@ -82,7 +82,6 @@ void	clear_env(t_commandlist *mini)
 		temp_env = next_env;
 	}
 	mini->env = NULL;
-
 }
 
 int	main(int ac, char **argv, char **env)
@@ -96,13 +95,13 @@ int	main(int ac, char **argv, char **env)
 	mini = init_shell();
 	if (!mini)
 	{
-		printf("Error allocating memory\n"), 
+		printf("Error allocating memory\n"),
 		exit(-1);
 	}
 	init_base(mini, env);
 	boucle (mini);
 	i = mini->res;
-	clear_env(mini);	
+	clear_env(mini);
 	free_shell(mini);
 	free(mini);
 	rl_clear_history();

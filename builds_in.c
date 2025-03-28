@@ -15,13 +15,13 @@
 
 #include "minishell.h"
 
-
 void	build_in(t_commandlist *mini, char *input)
 {
 	char	*str;
 	int		status;
 
 	status = 0;
+	mini->res = 0;
 	str = mini->cmd->args->content;
 	if (ft_strcmp(str, "exit", ft_strlen("exit")) == 0)
 		ft_exit(mini, input);
@@ -39,7 +39,8 @@ void	build_in(t_commandlist *mini, char *input)
 		status = ft_cd(mini);
 	else
 		return (exe(mini));
-	mini->res = status;
+	if (mini->res == 0 || mini->res == status)
+		mini->res = status;
 }
 
 void	ft_exit(t_commandlist *mini, char *input)

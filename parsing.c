@@ -47,7 +47,7 @@ int	handle_arguments(char *input, int *i, t_commandlist *mini)
 		else
 			(*i)++;
 		if (input[*i] == '\0')
-			break;
+			break ;
 	}
 	current_token = ft_strndup(&input[start], *i - start);
 	if (!current_token)
@@ -95,67 +95,13 @@ int	lexing(char *input, t_commandlist *mini)
 
 int	parsing(char *input, t_commandlist *mini)
 {
-	if (checking_error_before(input))
-	{
-		mini->res = 2;
+	if (checking_error_before(mini, input))
 		return (1);
-	}
 	if (lexing(input, mini) == 1)
 		return (1);
 	if (parse_token(mini) == 1)
 		return (1);
 	expand_variables(mini);
 	build_in(mini, input);
-	/*print_args(mini);
-	print_commands(mini->cmd);*/
 	return (0);
-}
-void print_args(t_commandlist *mini)
-{
-	t_token *temp_tokens;
-	
-	temp_tokens = mini->tokens;
-    while (temp_tokens)
-    {
-        printf("Token: %s, Type: %d\n", temp_tokens->value, temp_tokens->type);
-        temp_tokens = temp_tokens->next;
-    }
-}
-
-void print_redirections(t_arg *redir, const char *type)
-{
-    while (redir)
-    {
-        printf("  %s: %s\n", type, redir->content);
-        redir = redir->next;
-    }
-}
-
-void print_commands(t_command *cmd)
-{
-	t_command	*temp;
-
-	temp = cmd;
-    while (temp)
-    {
-        printf("Commande:\n");
-        
-        // Affiche les arguments
-        t_arg *arg = temp->args;
-        while (arg)
-        {
-            printf("  Argument: %s\n", arg->content);
-            arg = arg->next;
-        }
-        // Affiche les redirections si elles existent
-        if (temp->infile)
-            print_redirections(temp->infile, "Infile");
-        if (temp->outfile)
-            print_redirections(temp->outfile, "Outfile");
-        if (temp->append)
-            print_redirections(temp->append, "Append");
-        if (temp->heredoc)
-            print_redirections(temp->heredoc, "Heredoc");
-        temp = temp->next;
-    }
 }

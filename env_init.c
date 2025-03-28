@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:49:31 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/25 14:32:58 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/28 01:33:25 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	set_env(t_commandlist *mini, char **env)
 		newnode->line = ft_strdup(env[i]);
 		newnode->next = NULL;
 		newnode->pre = NULL;
-		newnode->i = 1;
 		if (!mini->env)
 			mini->env = newnode;
 		else
