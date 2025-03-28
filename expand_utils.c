@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 02:06:03 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/28 02:29:51 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/28 03:05:34 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,3 +93,19 @@ void	handle_quotes(char *expanded, char *content, t_expand *exp)
 		expanded[exp->j++] = content[exp->i++];
 }
 
+void	clear_env(t_commandlist *mini)
+{
+	t_lst			*temp_env;
+	t_lst			*next_env;
+
+	temp_env = mini->env;
+	while (temp_env)
+	{
+		next_env = temp_env->next;
+		if (temp_env->line)
+			free(temp_env->line);
+		free(temp_env);
+		temp_env = next_env;
+	}
+	mini->env = NULL;
+}

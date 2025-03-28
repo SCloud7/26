@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:54:35 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/28 02:23:53 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/03/28 03:27:21 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	handle_double_redirect(char *input, int *i, t_commandlist *mini,
 
 void	skip_quotes_parse(char *input, int *i)
 {
-	char quote;
+	char	quote;
 
 	quote = input[*i];
 	(*i)++;

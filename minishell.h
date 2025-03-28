@@ -84,6 +84,9 @@ typedef struct s_commandlist
 	int			res;
 }				t_commandlist;
 
+void		print_commands(t_command *cmd);
+void		print_args(t_commandlist *mini);
+
 // Parsing
 int			skip_quotes(char *input, int *i);
 int			handle_arguments(char *input, int *i, t_commandlist *mini);
@@ -149,6 +152,7 @@ void		append_node(t_commandlist *mini, char *env, t_lst *lst);
 int			is_at_end(char *content, int i);
 void		handle_exit_status(t_commandlist *mini, char *expanded, int *j);
 void		handle_quotes(char *expanded, char *content, t_expand *exp);
+void		clear_env(t_commandlist *mini);
 
 // free
 void		free_args(t_arg *args);

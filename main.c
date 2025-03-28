@@ -67,23 +67,6 @@ void	init_base(t_commandlist *mini, char **env)
 	signal(SIGINT, signal_handler);
 }
 
-void	clear_env(t_commandlist *mini)
-{
-	t_lst			*temp_env;
-	t_lst			*next_env;
-
-	temp_env = mini->env;
-	while (temp_env)
-	{
-		next_env = temp_env->next;
-		if (temp_env->line)
-			free(temp_env->line);
-		free(temp_env);
-		temp_env = next_env;
-	}
-	mini->env = NULL;
-}
-
 int	main(int ac, char **argv, char **env)
 {
 	t_commandlist	*mini;
