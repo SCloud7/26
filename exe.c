@@ -30,7 +30,6 @@ void	exe(t_commandlist *mini)
 		if (id[i] == 0)
 		{
 			child_pr(cur, mini);
-			free(id);
 			mini->res = 127;
 			ft_exit(mini, NULL);
 		}

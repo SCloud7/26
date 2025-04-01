@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:54:35 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/28 03:27:21 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/04/01 04:36:18 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ void	handle_single_redirect(char *input, int *i, t_commandlist *mini,
 	char	*file;
 
 	(*i) += 1;
-	while (input[*i] && isspace(input[*i]))
-		(*i)++;
+	skip_whitespace(input, i);
 	start = *i;
 	while (input[*i] && !is_special(input[*i]) && !isspace(input[*i]))
 	{
@@ -39,8 +38,7 @@ void	handle_single_redirect(char *input, int *i, t_commandlist *mini,
 	file = ft_strndup(&input[start], *i - start);
 	add_token(mini, token_type, file);
 	free (file);
-	while (input[*i] && isspace(input[*i]))
-		(*i)++;
+	skip_whitespace(input, i);
 }
 
 void	handle_pipe(char *input, int *i, t_commandlist *mini,
@@ -87,8 +85,7 @@ void	handle_double_redirect(char *input, int *i, t_commandlist *mini,
 	char	*file;
 
 	(*i) += 2;
-	while (input[*i] && isspace(input[*i]))
-		(*i)++;
+	skip_whitespace(input, i);
 	start = *i;
 	while (input[*i] && !is_special(input[*i]) && !isspace(input[*i]))
 	{
@@ -105,8 +102,7 @@ void	handle_double_redirect(char *input, int *i, t_commandlist *mini,
 	file = ft_strndup(&input[start], *i - start);
 	add_token(mini, token_type, file);
 	free (file);
-	while (input[*i] && isspace(input[*i]))
-		(*i)++;
+	skip_whitespace(input, i);
 }
 
 void	skip_quotes_parse(char *input, int *i)

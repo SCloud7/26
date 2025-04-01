@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:51:28 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/28 02:41:42 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/04/01 04:28:25 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	expand_args(t_commandlist *mini, t_arg *to_expand)
 	while (arg)
 	{
 		new_content = expand_env(mini, arg->content);
+		if (!new_content)
+			new_content = ft_strdup("");
 		free(arg->content);
 		arg->content = new_content;
 		arg = arg->next;

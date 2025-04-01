@@ -44,12 +44,16 @@ void	boucle(t_commandlist *mini)
 
 	while (1)
 	{
-		g_signal = 0;
 		input = readline("user:");
 		if (!input)
 			break ;
 		if (*input)
 			add_history(input);
+		if (g_signal == SIGINT)
+		{
+			mini->res = 130;
+			g_signal = 0;
+		}
 		if (parsing(input, mini) != 0)
 		{
 			free(input);

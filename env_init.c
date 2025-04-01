@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:49:31 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/28 01:33:25 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/04/01 04:39:10 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,18 @@ t_lst	*find_last(t_lst *stack)
 	while (stack->next)
 		stack = stack->next;
 	return (stack);
+}
+
+void	expand_exit_lenght(t_commandlist *mini, t_expand_lenght *exp_l)
+{
+	exp_l->new_len += ft_numlen(mini->res);
+	exp_l->i++;
+}
+
+void	toggle_quote(char c, int *in_double_quote, int *in_single_quote)
+{
+	if (c == '"' && !(*in_single_quote))
+		*in_double_quote = !(*in_double_quote);
+	else if (c == '\'' && !(*in_double_quote))
+		*in_single_quote = !(*in_single_quote);
 }

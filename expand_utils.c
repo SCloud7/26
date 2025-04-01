@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 02:06:03 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/28 03:05:34 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/04/01 04:39:35 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ void	handle_quotes(char *expanded, char *content, t_expand *exp)
 		exp->in_single_quote = !exp->in_single_quote;
 		exp->i++;
 	}
-	else if ((content[exp->i] == '"' && exp->in_single_quote) || (content[exp->i] == '\'' && exp->in_double_quote))
+	else if ((content[exp->i] == '"' && exp->in_single_quote)
+		|| (content[exp->i] == '\'' && exp->in_double_quote))
 		expanded[exp->j++] = content[exp->i++];
 }
 

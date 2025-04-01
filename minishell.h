@@ -31,6 +31,14 @@ typedef struct s_expand
 	int	in_single_quote;
 }	t_expand;
 
+typedef struct s_expand_lenght
+{
+	int	i;
+	int	new_len;
+	int	in_double_quote;
+	int	in_single_quote;
+}	t_expand_lenght;
+
 typedef struct s_lst
 {
 	char			*line;
@@ -125,11 +133,14 @@ int			add_token(t_commandlist *mini, t_token_type type,
 void		handle_double_redirect(char *input, int *i, t_commandlist *mini,
 				t_token_type token_type);
 void		skip_quotes_parse(char *input, int *i);
+void		skip_whitespace(char *input, int *i);
 
 // env_init
 int			ft_numlen(int nbr);
 void		set_env(t_commandlist *mini, char **env);
 t_lst		*find_last(t_lst *stack);
+void		expand_exit_lenght(t_commandlist *mini, t_expand_lenght *exp_l);
+void		toggle_quote(char c, int *in_double_quote, int *in_single_quote);
 
 // env_lenght
 char		*search_env(t_lst *env, char *key);

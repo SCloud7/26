@@ -6,7 +6,7 @@
 /*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:51:20 by fsingh            #+#    #+#             */
-/*   Updated: 2025/03/26 17:02:12 by fsingh           ###   ########.fr       */
+/*   Updated: 2025/04/01 04:39:28 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,6 @@ int	get_env_length(t_commandlist *mini, char *var)
 	return (0);
 }
 
-void	toggle_quote(char c, int *in_double_quote, int *in_single_quote)
-{
-	if (c == '"' && !(*in_single_quote))
-		*in_double_quote = !(*in_double_quote);
-	else if (c == '\'' && !(*in_double_quote))
-		*in_single_quote = !(*in_single_quote);
-}
-
 int	get_var_lenght(t_commandlist *mini, char *content, int *i)
 {
 	int		start;
@@ -64,53 +56,51 @@ int	get_var_lenght(t_commandlist *mini, char *content, int *i)
 	return (len);
 }
 
+void	quote_lenght(t_expand_lenght *exp_l, char *content)
+{
+	if (content[exp_l->i] == '"' && !exp_l->in_single_quote)
+	{
+		exp_l->in_double_quote = !exp_l->in_double_quote;
+		exp_l->i++;
+	}
+	else if (content[exp_l->i] == '\'' && !exp_l->in_double_quote)
+	{
+		exp_l->in_single_quote = !exp_l->in_single_quote;
+		exp_l->i++;
+	}
+	else if ((content[exp_l->i] == '"' && exp_l->in_single_quote)
+		|| (content[exp_l->i] == '\'' && exp_l->in_double_quote))
+	{
+		exp_l->new_len++;
+		exp_l->i++;
+	}
+}
+
 int	calc_expand_length(t_commandlist *mini, char *content)
 {
-	int		i;
-	int		new_len;
-	int		in_double_quote;
-	int		in_single_quote;
+	t_expand_lenght	exp_l;
 
-	i = 0;
-	new_len = 0;
-	in_double_quote = 0;
-	in_single_quote = 0;
-	while (content[i])
+	exp_l = (t_expand_lenght){0, 0, 0, 0};
+	while (content[exp_l.i])
 	{
-		if (content[i] == '"' && !in_single_quote)
+		if (content[exp_l.i] == '\'' || content[exp_l.i] == '"')
+			quote_lenght(&exp_l, content);
+		else if (content[exp_l.i] == '$' && !exp_l.in_single_quote)
 		{
-			in_double_quote = !in_double_quote;
-			i++;
-		}
-		else if (content[i] == '\'' && !in_double_quote)
-		{
-			in_single_quote = !in_single_quote;
-			i++;
-		}
-		else if ((content[i] == '"' && in_single_quote) || (content[i] == '\'' && in_double_quote))
-		{
-			new_len++;
-			i++;
-		}
-		else if (content[i] == '$' && !in_single_quote)
-		{
-			i++;
-			if (content[i] == '\0' || isspace(content[i]))
-				new_len++;
-			else if (content[i] == '?')
-			{
-				new_len += ft_numlen(mini->res);
-				i++;
-			}
-			else if (ft_isalnum(content[i]) || content[i] == '_')
-				new_len += get_var_lenght(mini, content, &i);
+			exp_l.i++;
+			if (content[exp_l.i] == '\0' || isspace(content[exp_l.i]))
+				exp_l.new_len++;
+			else if (content[exp_l.i] == '?')
+				expand_exit_lenght(mini, &exp_l);
+			else if (ft_isalnum(content[exp_l.i]) || content[exp_l.i] == '_')
+				exp_l.new_len += get_var_lenght(mini, content, &exp_l.i);
 			continue ;
 		}
 		else
 		{
-			new_len++;
-			i++;
+			exp_l.new_len++;
+			exp_l.i++;
 		}
 	}
-	return (new_len);
+	return (exp_l.new_len);
 }

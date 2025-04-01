@@ -84,7 +84,7 @@ int		ft_echo(t_commandlist *mini)
 		return (0);
 	}
 	cur = mini->cmd->args->next;
-	while (cur->content[i] == 'n' && cur->content[0] == '-')
+	while (cur && cur->content && cur->content[0] == 'n' && cur->content[i] == '-')
 	{
 		while (cur->content[i] == 'n')
 		{

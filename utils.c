@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fsingh <fsingh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:20:05 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/03/23 19:22:49 by marvin           ###   ########.fr       */
+/*   Updated: 2025/04/01 04:36:39 by fsingh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,10 @@ void	redirect_lines(t_lst *lst)
 	dup2(pipes[0], STDIN_FILENO);
 	close(pipes[0]);
 	clean_lst(lst);
+}
+
+void	skip_whitespace(char *input, int *i)
+{
+	while (input[*i] && isspace(input[*i]))
+		(*i)++;
 }
